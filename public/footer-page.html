@@ -1,0 +1,70 @@
+<dom-module id="footer-page">
+	<template>
+		<style>
+			:host {
+				display: block;
+				max-width: 100%;
+			}
+			footer{
+				background: rgba(236,239,241,0.4);
+			}
+			#footer-contain{
+				padding: 36px 0;
+				margin: 0 auto;
+				margin-top: 56px;
+				width: 80%;				
+			}
+			#footer-contain p{
+				color: rgba(0,0,0,0.7);
+				font-weight: 300;
+				margin-left: 24px;
+			}
+			#footer-contain a{
+				text-decoration: none;
+				font-weight: 400;
+				color: #00838F;
+			}
+			#footer-gdg{
+				height: 96px;
+			}	
+			#hashtag{
+				margin: 48px auto 24px auto;
+				width: 50%;
+				display: block;
+			}
+			@media screen and (max-width: 840px) {
+				#hashtag{
+					width: 80%;
+				}	
+				#footer-contain{
+					padding: 36px 0;
+					width: 100%;				
+				}
+				#footer-gdg{
+					height: auto;
+					max-width: 100%;
+				}	
+			}
+			@media screen and (max-width: 480px) {
+				#hashtag{
+					width: 100%;
+				}					
+			}
+			
+		</style>
+		<a href="https://twitter.com/hashtag/io16extended" target="_blank">
+			<img src="images/hashtag.png" id="hashtag">
+		</a>
+		<footer>
+			<div id="footer-contain">
+				<a href="https://www.facebook.com/GDGKualaLumpur/" target="_blank"><img src="images/gdgkl.png" id="footer-gdg"></a>
+				<p>Created and Designed by <a href="https://limhenry.xyz" target="_blank">Henry Lim</a></p>
+			</div>
+		</footer>
+	</template>
+	<script>
+		Polymer({
+			is: 'footer-page'
+		});
+	</script>
+</dom-module>
