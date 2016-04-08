@@ -7,6 +7,7 @@
  - Responsive
  - Polymer
  - App-Layout + Neon Animated Pages
+ - Service Workers
   
 ## Quick-start guide
  - [Fork](https://github.com/limhenry/io16mmu/fork) repo and clone locally or [download](https://github.com/limhenry/io16mmu/archive/master.zip) and extract to where you want to work.
@@ -17,7 +18,7 @@
  - Contact Page
  - Push Notification
  - Offline support
- - Service Workers
+
  
 ## Contribution
 This project is still under development and it is open for contributions. Feel free to send PR. If you have any questions, feel free to contact [me](https://twitter.com/henrylim96).
