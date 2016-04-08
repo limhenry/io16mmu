@@ -21909,7 +21909,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 	</app-drawer-layout>
 
-	<platinum-sw-register auto-register=""></platinum-sw-register>
+	<!-- <platinum-sw-register auto-register></platinum-sw-register> -->
 
 	</template>
 	<script>
@@ -21929,7 +21929,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 				}
 			},
 			ready: function() {
+				
 				this.async(function() {
+					console.log("ready");
 					if (!this.route.path) {
 						this.set('route.path', '/');
 						window.location.hash = "/"
@@ -21966,12 +21968,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 					document.title="Live Stream"
 				}				
 				else if (this.data.page == ""){
-					document.title="Google I/O Extended 2016 MMU Cyberjaya"
+					document.title="Google I/O Extended 2016 MMU Cyberjaya";
+					
 				}				
 				else{
 					this.set('route.path', '/');
 				}
-			}
+			},
+			
+			attached: function() {
+				this.async(function() {
+					document.querySelector('neon-animated-pages').addEventListener('neon-animation-finish', function() {
+						if(window.location.hash == "#/"){
+							document.querySelector('app-page').querySelector('google-map').resize();
+						}
+					});
+				});
+			},				
 
 		});
 	</script>
@@ -22176,7 +22189,7 @@ Configuration:
 		<paper-card animated-shadow="true" class="cyan">
 			<div class="card-content">
 				<div id="event-detail">
-					<p>11:00PM, 18 May - 3:00PM, 19 May</p>
+					<p>11:00PM, 18 May - 3:00PM, 19 Maysssss</p>
 					<p>Multimedia University, Cyberjaya, Malaysia</p>
 				</div>
 				<div id="event-desc">
@@ -22185,19 +22198,10 @@ Configuration:
 			</div>
 		</paper-card>
 
-		<template is="dom-if" if="{{!wide}}">
-			<google-map latitude="2.927884" longitude="101.642177" zoom="16" disable-zoom="" fittomarkers="" disable-default-ui="" drag-events="false">
-				<google-map-marker latitude="2.928684" longitude="101.641177" title="Faculty of Computing and Informatics">
-				</google-map-marker>
-			</google-map>			
-		</template>
-		<template is="dom-if" if="{{wide}}">
-			<google-map latitude="2.927884" longitude="101.642177" zoom="16" disable-zoom="" fittomarkers="">
-				<google-map-marker latitude="2.928684" longitude="101.641177" title="Faculty of Computing and Informatics">
-				</google-map-marker>
-			</google-map>			
-		</template>
-
+		<google-map id="googleMap" latitude="2.927884" longitude="101.642177" zoom="16" disable-zoom="" fittomarkers="" disable-default-ui="" drag-events="false">
+			<google-map-marker latitude="2.928684" longitude="101.641177" title="Faculty of Computing and Informatics">
+			</google-map-marker>
+		</google-map>			
 
 		<paper-card class="bluegrey">
 			<div class="card-content">
@@ -22214,7 +22218,9 @@ Configuration:
 		Polymer({
 			is: 'home-page',
 
-			behaviors: [Polymer.NeonAnimatableBehavior],
+			behaviors: [
+				Polymer.NeonAnimatableBehavior
+			],
 
 			properties: {
 				animationConfig: {
@@ -22236,8 +22242,14 @@ Configuration:
 							],
 						}
 					}
-				}
-			},	
+				},
+			},
+
+			listeners: {
+				'neon-animation-start': '_onNeonAnimationFinish',
+				'neon-animation-finish': '_onNeonAnimationFinish'
+			},
+
 		});
 	</script>
 </dom-module><dom-module id="live-page" assetpath="/">
@@ -22610,7 +22622,7 @@ Configuration:
 						}
 					}
 				}
-			},	
+			}
 		});
 	</script>
 </dom-module><dom-module id="agenda-page" assetpath="/">

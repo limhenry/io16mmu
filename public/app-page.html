@@ -124,7 +124,7 @@
 
 	</app-drawer-layout>
 
-	<platinum-sw-register auto-register></platinum-sw-register>
+	<!-- <platinum-sw-register auto-register></platinum-sw-register> -->
 
 	</template>
 	<script>
@@ -144,7 +144,9 @@
 				}
 			},
 			ready: function() {
+				
 				this.async(function() {
+					console.log("ready");
 					if (!this.route.path) {
 						this.set('route.path', '/');
 						window.location.hash = "/"
@@ -181,12 +183,23 @@
 					document.title="Live Stream"
 				}				
 				else if (this.data.page == ""){
-					document.title="Google I/O Extended 2016 MMU Cyberjaya"
+					document.title="Google I/O Extended 2016 MMU Cyberjaya";
+					
 				}				
 				else{
 					this.set('route.path', '/');
 				}
-			}
+			},
+			
+			attached: function() {
+				this.async(function() {
+					document.querySelector('neon-animated-pages').addEventListener('neon-animation-finish', function() {
+						if(window.location.hash == "#/"){
+							document.querySelector('app-page').querySelector('google-map').resize();
+						}
+					});
+				});
+			},				
 
 		});
 	</script>

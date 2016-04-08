@@ -116,7 +116,7 @@
 		<paper-card animated-shadow="true" class="cyan">
 			<div class="card-content">
 				<div id="event-detail">
-					<p>11:00PM, 18 May - 3:00PM, 19 May</p>
+					<p>11:00PM, 18 May - 3:00PM, 19 Maysssss</p>
 					<p>Multimedia University, Cyberjaya, Malaysia</p>
 				</div>
 				<div id="event-desc">
@@ -125,37 +125,21 @@
 			</div>
 		</paper-card>
 
-		<template is="dom-if" if="{{!wide}}">
-			<google-map 
-				latitude="2.927884" 
-				longitude="101.642177"
-				zoom="16"
-				disable-zoom
-				fitToMarkers
-				disable-Default-Ui
-				drag-Events="false">
-				<google-map-marker 
-					latitude="2.928684" 
-					longitude="101.641177"
-					title="Faculty of Computing and Informatics">
-				</google-map-marker>
-			</google-map>			
-		</template>
-		<template is="dom-if" if="{{wide}}">
-			<google-map 
-				latitude="2.927884" 
-				longitude="101.642177"
-				zoom="16"
-				disable-zoom
-				fitToMarkers>
-				<google-map-marker 
-					latitude="2.928684" 
-					longitude="101.641177"
-					title="Faculty of Computing and Informatics">
-				</google-map-marker>
-			</google-map>			
-		</template>
-
+		<google-map
+			id="googleMap" 
+			latitude="2.927884" 
+			longitude="101.642177"
+			zoom="16"
+			disable-zoom
+			fitToMarkers
+			disable-Default-Ui
+			drag-Events="false">
+			<google-map-marker 
+				latitude="2.928684" 
+				longitude="101.641177"
+				title="Faculty of Computing and Informatics">
+			</google-map-marker>
+		</google-map>			
 
 		<paper-card class="bluegrey">
 			<div class="card-content">
@@ -172,7 +156,9 @@
 		Polymer({
 			is: 'home-page',
 
-			behaviors: [Polymer.NeonAnimatableBehavior],
+			behaviors: [
+				Polymer.NeonAnimatableBehavior
+			],
 
 			properties: {
 				animationConfig: {
@@ -194,8 +180,14 @@
 							],
 						}
 					}
-				}
-			},	
+				},
+			},
+
+			listeners: {
+				'neon-animation-start': '_onNeonAnimationFinish',
+				'neon-animation-finish': '_onNeonAnimationFinish'
+			},
+
 		});
 	</script>
 </dom-module>
