@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Google I/O Extended 2016 MMU Cyberjaya</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="description" content="Google I/O 2016 brings together developers for an immersive, three-day experience focused on exploring the next generation of technology, mobile and beyond. #io16">
+
+    <link rel="icon" sizes="32x32" href="images/favicon-32.png">
+
+    <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js" async></script>
+
+    <link rel="import" href="build.html">
+
+	<link rel="manifest" href="/manifest.json">
+
+	<meta name="theme-color" content="#546E7A">	
+
+	<style>
+		html, body{
+			margin: 0;
+			height: 100%;
+			font-family: Roboto, sans-serif;
+		}
+	</style>
+
+</head>
+
+<body class="fullbleed layout vertical">
+
+<app-page id="appPage"></app-page>
+
+<dom-module id="app-page">
+	<template>
+		<style>
+			:host {
+				display: block;
+				--paper-tab-ink: #546E7A;
+			}
+			paper-tabs{
+				margin-right: 24px;
+				--paper-tabs-selection-bar-color: #546E7A;
+				height: 64px;
+			}
+			paper-tab{
+				color: #546E7A;
+				font-weight: 500;
+			}
+			app-toolbar{
+				background: white;
+			}
+			.io-logo{
+				background: url('images/io-white.png') no-repeat;
+				display: inline-block;
+				background-size: contain;
+				height: 40px;
+				width: 60px;
+				transition: opacity 200ms ease-in-out;
+				will-change: opacity;				
+			}
+			.drawer-text{
+				font-size: 14px;
+				line-height: 20px;
+				color: #1E535A;
+				font-weight: 500;
+			}
+			paper-toolbar{
+				background: #4DD0E1;
+				margin-bottom: 8px;
+			}
+			paper-item{
+				font-size: 14px;
+				color: #546E7A;
+				font-weight: 500;
+				--paper-item-selected-weight: 500;
+				--paper-item-selected: {
+					background: #eceff1;
+				};
+			}
+			#io-toolbar{
+				cursor: pointer;
+				height: 40px;
+				margin-left: 20px;
+				vertical-align: middle;
+			}
+			@media screen and (max-width: 840px) {
+				paper-tabs{
+					margin-right: 0px;
+				}
+			}
+		</style>
+
+	<iron-media-query query="(min-width: 840px)" query-matches="{{wide}}"></iron-media-query>
+
+	<app-drawer-layout force-narrow>
+
+		<template is="dom-if" if="{{!wide}}">
+			<app-drawer id="drawer" swipe-open>
+				<paper-toolbar class="tall">
+					<div class="top io-logo" flex></div>
+					<div class="bottom drawer-text">
+						<div>11:00PM, 18 May</div>
+						<div>Multimedia University, Cyberjaya</div>
+					</div>
+				</paper-toolbar>
+				<iron-selector attr-for-selected="id" selected="{{data.page}}">
+					<paper-item id="" drawer-toggle on-tap="scrollTop">Home</paper-item>
+					<paper-item id="getting" drawer-toggle on-tap="scrollTop">Getting There</paper-item>
+					<paper-item id="register" drawer-toggle on-tap="scrollTop">Register</paper-item>
+				</iron-selector>
+			</app-drawer>
+		</template>
+		<template is="dom-if" if="{{wide}}">
+			<app-drawer id="drawer"></app-drawer>
+		</template>		
+
+		<app-header-layout>
+
+			<app-header reveals effects="waterfall">
+
+				<app-toolbar wide-layout$="{{wide}}">
+
+					<template is="dom-if" if="{{!wide}}">
+						<paper-icon-button icon="menu" drawer-toggle ></paper-icon-button>	
+					</template>
+
+					<template is="dom-if" if="{{wide}}">
+						<div on-tap="goHome">
+							<img src="images/io.png" id="io-toolbar">
+						</div>
+						<div title></div>
+						<paper-tabs attr-for-selected="id" selected="{{data.page}}">
+							<paper-tab id="getting" on-tap="scrollTop">GETTING THERE</paper-tab>
+							<paper-tab id="register" on-tap="scrollTop">REGISTER</paper-tab>
+						</paper-tabs>    	    	
+					</template>
+
+				</app-toolbar>
+
+			</app-header>
+
+			<div>
+				<carbon-location route="{{route}}" use-hash-as-path></carbon-location>
+				<carbon-route route="{{route}}" pattern="/:page" data="{{data}}"></carbon-route>
+
+				<neon-animated-pages class="flex" attr-for-selected="id" selected="{{data.page}}">
+					<home-page id=""></home-page>
+					<transport-page id="getting"></transport-page>
+					<register-page id="register"></register-page>
+				</neon-animated-pages>
+			</div>
+
+		</app-header-layout>
+
+	</app-drawer-layout>
+
+	</template>
+	<script>
+		Polymer({
+			is: 'app-page',
+			properties: {
+				route: {
+					type: Object,
+					observer: "changeTitle",
+					notify: true					
+				},
+				data: {
+					type: Object,
+					value: {
+						page: '/home/'
+					},
+				}
+			},
+			ready: function() {
+				this.async(function() {
+					if (!this.route.path) {
+						this.set('route.path', '/');
+					}
+				},1);
+			},
+			goHome: function(){
+				this.set('route.path', '/');
+				document.body.scrollTop = 0
+			},
+			toggleDrawer: function(){
+				this.$.drawer.toggle();
+			},
+			scrollTop: function(){
+				document.body.scrollTop = 0
+			},
+			changeTitle: function(){
+				if (this.data.page == "getting"){
+					document.title="Getting There"
+				}
+				else if (this.data.page == "register"){
+					document.title="Register"
+				}
+				else if (this.data.page == ""){
+					document.title="Google I/O Extended 2016 MMU Cyberjaya"
+				}				
+				else{
+					this.set('route.path', '/');
+				}
+			}
+
+		});
+	</script>
+</dom-module>
+</body>
+
+
+</html>
