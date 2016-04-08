@@ -1,10 +1,7 @@
 <link rel="import" href="bower_components/polymer/polymer.html">
 <link rel="import" href="bower_components/neon-animation/neon-animatable-behavior.html">
-<link rel="import" href="bower_components/neon-animation/animations/slide-from-bottom-animation.html">
-<link rel="import" href="bower_components/neon-animation/animations/slide-from-top-animation.html">
 <link rel="import" href="bower_components/neon-animation/animations/fade-out-animation.html">
 <link rel="import" href="bower_components/neon-animation/animations/fade-in-animation.html">
-<link rel="import" href="bower_components/neon-animation/animations/slide-down-animation.html">
 
 <dom-module id="home-page">
 	<template>
@@ -105,13 +102,17 @@
 					margin-bottom: 32px;
 				}
 				#cover{
-					margin-top: 12px;
+					margin-top: 0;
 					background-image: url('images/cover_white_vertical.png');
 				}		
 
 			}
 		</style>
 		<div id="cover"></div>
+
+		<iron-media-query query="(min-width: 840px)" query-matches="{{wide}}"></iron-media-query>
+
+
 		<paper-card animated-shadow="true" class="cyan">
 			<div class="card-content">
 				<div id="event-detail">
@@ -123,18 +124,39 @@
 				</div>
 			</div>
 		</paper-card>
-		<google-map 
-			latitude="2.927884" 
-			longitude="101.642177"
-			zoom="16"
-			disable-zoom
-			fitToMarkers>
+
+		<template is="dom-if" if="{{!wide}}">
+			<google-map 
+				latitude="2.927884" 
+				longitude="101.642177"
+				zoom="16"
+				disable-zoom
+				fitToMarkers
+				disable-Default-Ui
+				drag-Events="false">
 				<google-map-marker 
 					latitude="2.928684" 
 					longitude="101.641177"
 					title="Faculty of Computing and Informatics">
 				</google-map-marker>
-			</google-map>
+			</google-map>			
+		</template>
+		<template is="dom-if" if="{{wide}}">
+			<google-map 
+				latitude="2.927884" 
+				longitude="101.642177"
+				zoom="16"
+				disable-zoom
+				fitToMarkers>
+				<google-map-marker 
+					latitude="2.928684" 
+					longitude="101.641177"
+					title="Faculty of Computing and Informatics">
+				</google-map-marker>
+			</google-map>			
+		</template>
+
+
 		<paper-card class="bluegrey">
 			<div class="card-content">
 				<div id="get-ticket">

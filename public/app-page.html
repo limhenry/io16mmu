@@ -113,6 +113,8 @@
 
 				<neon-animated-pages class="flex" attr-for-selected="id" selected="{{data.page}}">
 					<home-page id=""></home-page>
+					<agenda-page id="agenda"></agenda-page>
+					<live-page id="live"></live-page>
 					<transport-page id="getting"></transport-page>
 					<register-page id="register"></register-page>
 				</neon-animated-pages>
@@ -145,6 +147,11 @@
 				this.async(function() {
 					if (!this.route.path) {
 						this.set('route.path', '/');
+						window.location.hash = "/"
+					}
+					if (this.route.path == "/"){
+						this.set('route.path', '/');
+						window.location.hash = "/"
 					}
 				},1);
 				console.log("                      \n                  `:                      \n                  ::                      \n                  ::                      \n:::::::::::       :.       .::::::        \n:::::::::::       :      :::::::::::      \n:::::::::::      ,:    `::::::::::::::    \n:::::::::::      ::   `::::::::::::::::   \n:::::::::::      :,   :::::::::::::::::.  \n:::::::::::      :`  :::::::::::::::::::  \n:::::::::::     `:  `:::::::::::::::::::: \n:::::::::::     ::  ::::::::::::::::::::: \n:::::::::::     ::  :::::::::::::::::::::`\n:::::::::::     :`  :::::::::::::::::::::,\n:::::::::::    `:   ::::::::::::::::::::::\n:::::::::::    ::   ::::::::::::::::::::::\n:::::::::::    ::   :::::::::::::::::::::,\n:::::::::::    :,   :::::::::::::::::::::`\n:::::::::::    :    ::::::::::::::::::::: \n:::::::::::   .:    `:::::::::::::::::::: \n:::::::::::   ::     :::::::::::::::::::  \n:::::::::::   ::      :::::::::::::::::.  \n:::::::::::   :`      `::::::::::::::::   \n:::::::::::  `:        `::::::::::::::    \n:::::::::::  ::          :::::::::::      \n:::::::::::  ::            .::::::        \n             :.                           \n             :                            \n            .:                            \n            ::                            \n");
@@ -167,6 +174,12 @@
 				else if (this.data.page == "register"){
 					document.title="Register"
 				}
+				else if (this.data.page == "agenda"){
+					document.title="Agenda"
+				}				
+				else if (this.data.page == "live"){
+					document.title="Live Stream"
+				}				
 				else if (this.data.page == ""){
 					document.title="Google I/O Extended 2016 MMU Cyberjaya"
 				}				
