@@ -18607,6 +18607,156 @@ animations to be run when switching to or switching out of the page.
 </script>
 <!--
 @license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+--><!--
+`<fade-out-animation>` animates the opacity of an element from 1 to 0.
+
+Configuration:
+```
+{
+  name: 'fade-out-animation',
+  node: <node>
+  timing: <animation-timing>
+}
+```
+-->
+
+<script>
+
+  Polymer({
+
+    is: 'fade-out-animation',
+
+    behaviors: [
+      Polymer.NeonAnimationBehavior
+    ],
+
+    configure: function(config) {
+      var node = config.node;
+      this._effect = new KeyframeEffect(node, [
+        {'opacity': '1'},
+        {'opacity': '0'}
+      ], this.timingFromConfig(config));
+      return this._effect;
+    }
+
+  });
+
+</script>
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+--><!--
+`<fade-in-animation>` animates the opacity of an element from 0 to 1.
+
+Configuration:
+```
+{
+  name: 'fade-in-animation',
+  node: <node>
+  timing: <animation-timing>
+}
+```
+-->
+
+<script>
+
+  Polymer({
+
+    is: 'fade-in-animation',
+
+    behaviors: [
+      Polymer.NeonAnimationBehavior
+    ],
+
+    configure: function(config) {
+      var node = config.node;
+      this._effect = new KeyframeEffect(node, [
+        {'opacity': '0'},
+        {'opacity': '1'}
+      ], this.timingFromConfig(config));
+      return this._effect;
+    }
+
+  });
+
+</script>
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+--><!--
+`<transform-animation>` animates a custom transform on an element. Use this to animate multiple
+transform properties, or to apply a custom transform value.
+
+Configuration:
+```
+{
+  name: 'transform-animation',
+  node: <node>,
+  transformOrigin: <transform-origin>,
+  transformFrom: <transform-from-string>,
+  transformTo: <transform-to-string>,
+  timing: <animation-timing>
+}
+```
+-->
+
+<script>
+
+  Polymer({
+
+    is: 'transform-animation',
+
+    behaviors: [
+      Polymer.NeonAnimationBehavior
+    ],
+
+    /**
+     * @param {{
+     *   node: !Element,
+     *   transformOrigin: (string|undefined),
+     *   transformFrom: (string|undefined),
+     *   transformTo: (string|undefined),
+     *   timing: (Object|undefined)
+     * }} config
+     */
+    configure: function(config) {
+      var node = config.node;
+      var transformFrom = config.transformFrom || 'none';
+      var transformTo = config.transformTo || 'none';
+
+      if (config.transformOrigin) {
+        this.setPrefixedProperty(node, 'transformOrigin', config.transformOrigin);
+      }
+
+      this._effect = new KeyframeEffect(node, [
+        {'transform': transformFrom},
+        {'transform': transformTo}
+      ], this.timingFromConfig(config));
+
+      return this._effect;
+    }
+
+  });
+
+</script>
+<!--
+@license
 Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
 This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
 The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
@@ -21909,7 +22059,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 	</app-drawer-layout>
 
-	<!-- <platinum-sw-register auto-register></platinum-sw-register> -->
+	<platinum-sw-register auto-register=""></platinum-sw-register>
 
 	</template>
 	<script>
@@ -21931,7 +22081,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 			ready: function() {
 				
 				this.async(function() {
-					console.log("ready");
 					if (!this.route.path) {
 						this.set('route.path', '/');
 						window.location.hash = "/"
@@ -21941,8 +22090,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 						window.location.hash = "/"
 					}
 				},1);
-				console.log("                      \n                  `:                      \n                  ::                      \n                  ::                      \n:::::::::::       :.       .::::::        \n:::::::::::       :      :::::::::::      \n:::::::::::      ,:    `::::::::::::::    \n:::::::::::      ::   `::::::::::::::::   \n:::::::::::      :,   :::::::::::::::::.  \n:::::::::::      :`  :::::::::::::::::::  \n:::::::::::     `:  `:::::::::::::::::::: \n:::::::::::     ::  ::::::::::::::::::::: \n:::::::::::     ::  :::::::::::::::::::::`\n:::::::::::     :`  :::::::::::::::::::::,\n:::::::::::    `:   ::::::::::::::::::::::\n:::::::::::    ::   ::::::::::::::::::::::\n:::::::::::    ::   :::::::::::::::::::::,\n:::::::::::    :,   :::::::::::::::::::::`\n:::::::::::    :    ::::::::::::::::::::: \n:::::::::::   .:    `:::::::::::::::::::: \n:::::::::::   ::     :::::::::::::::::::  \n:::::::::::   ::      :::::::::::::::::.  \n:::::::::::   :`      `::::::::::::::::   \n:::::::::::  `:        `::::::::::::::    \n:::::::::::  ::          :::::::::::      \n:::::::::::  ::            .::::::        \n             :.                           \n             :                            \n            .:                            \n            ::                            \n");
-				console.log('%cGoogle I/O Extended 2016\nMMU Cyberjaya', 'color: #5c6bc0; font-size: 3em; font-family: Roboto; font-weight: 800;-webkit-text-stroke: 2px black;');
+				//console.log("                      \n                  `:                      \n                  ::                      \n                  ::                      \n:::::::::::       :.       .::::::        \n:::::::::::       :      :::::::::::      \n:::::::::::      ,:    `::::::::::::::    \n:::::::::::      ::   `::::::::::::::::   \n:::::::::::      :,   :::::::::::::::::.  \n:::::::::::      :`  :::::::::::::::::::  \n:::::::::::     `:  `:::::::::::::::::::: \n:::::::::::     ::  ::::::::::::::::::::: \n:::::::::::     ::  :::::::::::::::::::::`\n:::::::::::     :`  :::::::::::::::::::::,\n:::::::::::    `:   ::::::::::::::::::::::\n:::::::::::    ::   ::::::::::::::::::::::\n:::::::::::    ::   :::::::::::::::::::::,\n:::::::::::    :,   :::::::::::::::::::::`\n:::::::::::    :    ::::::::::::::::::::: \n:::::::::::   .:    `:::::::::::::::::::: \n:::::::::::   ::     :::::::::::::::::::  \n:::::::::::   ::      :::::::::::::::::.  \n:::::::::::   :`      `::::::::::::::::   \n:::::::::::  `:        `::::::::::::::    \n:::::::::::  ::          :::::::::::      \n:::::::::::  ::            .::::::        \n             :.                           \n             :                            \n            .:                            \n            ::                            \n");
+				//console.log('%cGoogle I/O Extended 2016\nMMU Cyberjaya', 'color: #5c6bc0; font-size: 3em; font-family: Roboto; font-weight: 800;-webkit-text-stroke: 2px black;');
 			},
 			goHome: function(){
 				this.set('route.path', '/');
@@ -21980,6 +22129,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 				this.async(function() {
 					document.querySelector('neon-animated-pages').addEventListener('neon-animation-finish', function() {
 						if(window.location.hash == "#/"){
+							console.log("map resize");
 							document.querySelector('app-page').querySelector('google-map').resize();
 						}
 					});
@@ -21990,92 +22140,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 	</script>
 
 </dom-module>
-<!--
-@license
-Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
---><!--
-`<fade-out-animation>` animates the opacity of an element from 1 to 0.
-
-Configuration:
-```
-{
-  name: 'fade-out-animation',
-  node: <node>
-  timing: <animation-timing>
-}
-```
--->
-
-<script>
-
-  Polymer({
-
-    is: 'fade-out-animation',
-
-    behaviors: [
-      Polymer.NeonAnimationBehavior
-    ],
-
-    configure: function(config) {
-      var node = config.node;
-      this._effect = new KeyframeEffect(node, [
-        {'opacity': '1'},
-        {'opacity': '0'}
-      ], this.timingFromConfig(config));
-      return this._effect;
-    }
-
-  });
-
-</script>
-<!--
-@license
-Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
---><!--
-`<fade-in-animation>` animates the opacity of an element from 0 to 1.
-
-Configuration:
-```
-{
-  name: 'fade-in-animation',
-  node: <node>
-  timing: <animation-timing>
-}
-```
--->
-
-<script>
-
-  Polymer({
-
-    is: 'fade-in-animation',
-
-    behaviors: [
-      Polymer.NeonAnimationBehavior
-    ],
-
-    configure: function(config) {
-      var node = config.node;
-      this._effect = new KeyframeEffect(node, [
-        {'opacity': '0'},
-        {'opacity': '1'}
-      ], this.timingFromConfig(config));
-      return this._effect;
-    }
-
-  });
-
-</script>
 <dom-module id="home-page" assetpath="/">
 	<template>
 		<style>
@@ -22102,6 +22166,7 @@ Configuration:
 				display: block;
 			}
 			paper-card{
+				max-width: 1600px;
 				width: 80%;
 				margin: 0 auto;
 				display: block;
@@ -22137,8 +22202,9 @@ Configuration:
 				margin-bottom: 16px;
 			}
 			google-map {
+				max-width: 1600px;
 				height: 360px;
-				max-width: 80%;
+				width: 80%;
 				margin: 0 auto;
 			}
 			#venue_img{
@@ -22181,38 +22247,39 @@ Configuration:
 
 			}
 		</style>
-		<div id="cover"></div>
+		<div id="homePage">
+			<div id="cover"></div>
 
-		<iron-media-query query="(min-width: 840px)" query-matches="{{wide}}"></iron-media-query>
+			<iron-media-query query="(min-width: 840px)" query-matches="{{wide}}"></iron-media-query>
 
 
-		<paper-card animated-shadow="true" class="cyan">
-			<div class="card-content">
-				<div id="event-detail">
-					<p>11:00PM, 18 May - 3:00PM, 19 Maysssss</p>
-					<p>Multimedia University, Cyberjaya, Malaysia</p>
+			<paper-card animated-shadow="true" class="cyan">
+				<div class="card-content">
+					<div id="event-detail">
+						<p>11:00PM, 18 May - 3:00PM, 19 May</p>
+						<p>Multimedia University, Cyberjaya, Malaysia</p>
+					</div>
+					<div id="event-desc">
+						<p>Google I/O is for developers - the creative coders who are building what's next. Each year, we explore the latest in tech, mobile &amp; beyond.</p>		
+					</div>
 				</div>
-				<div id="event-desc">
-					<p>Google I/O is for developers - the creative coders who are building what's next. Each year, we explore the latest in tech, mobile &amp; beyond.</p>		
+			</paper-card>
+
+			<google-map id="googleMap" latitude="2.927884" longitude="101.642177" zoom="16" disable-zoom="" fittomarkers="" disable-default-ui="" drag-events="false">
+				<google-map-marker latitude="2.928684" longitude="101.641177" title="Faculty of Computing and Informatics">
+				</google-map-marker>
+			</google-map>			
+
+			<paper-card class="bluegrey">
+				<div class="card-content">
+					<div id="get-ticket">
+						<p>Get your ticket now on Peatix.</p>
+						<a href="https://io16mmu.peatix.com" target="_blank"><paper-button raised="">Book Now</paper-button></a>
+					</div>
 				</div>
-			</div>
-		</paper-card>
-
-		<google-map id="googleMap" latitude="2.927884" longitude="101.642177" zoom="16" disable-zoom="" fittomarkers="" disable-default-ui="" drag-events="false">
-			<google-map-marker latitude="2.928684" longitude="101.641177" title="Faculty of Computing and Informatics">
-			</google-map-marker>
-		</google-map>			
-
-		<paper-card class="bluegrey">
-			<div class="card-content">
-				<div id="get-ticket">
-					<p>Get your ticket now on Peatix.</p>
-					<a href="https://io16mmu.peatix.com" target="_blank"><paper-button raised="">Book Now</paper-button></a>
-				</div>
-			</div>
-		</paper-card>
-
-		<footer-page></footer-page>
+			</paper-card>
+			<footer-page></footer-page>
+		</div>
 	</template>
 	<script>
 		Polymer({
@@ -22230,25 +22297,48 @@ Configuration:
 								{
 									name: 'fade-in-animation',
 									node: this,
-									timing: {delay: 100}
-								}
+									timing: {
+										delay: 400,
+										duration: 500
+									}
+								},
+								{
+									name: 'transform-animation',
+									node: this.$.homePage,
+									transformOrigin: '100%',
+									transformFrom: 'translateY(30%)',
+									transformTo: 'translateY(0%)',
+									timing: {
+										delay: 200,
+										duration: 800	
+									}       
+								}								
 							],
 							'exit': [
 								{
 									name: 'fade-out-animation',
 									node: this,
-									timing: {delay: 100}
-								}
+									timing: {
+										delay: 100,
+										duration: 500
+									}
+								},
+								{
+									name: 'transform-animation',
+									node: this.$.homePage,
+									transformOrigin: '100%',
+									transformFrom: 'translateY(0%)',
+									transformTo: 'translateY(30%)',
+									timing: {
+										delay: 100,
+										duration: 800	
+									}       
+								}										
 							],
 						}
 					}
 				},
-			},
-
-			listeners: {
-				'neon-animation-start': '_onNeonAnimationFinish',
-				'neon-animation-finish': '_onNeonAnimationFinish'
-			},
+			}
 
 		});
 	</script>
@@ -22357,10 +22447,10 @@ Configuration:
 			}
 			.responsiveIframe {
 				position: relative;
-				padding-bottom: 500px; /* 16:9 */
+				padding-bottom: 550px; /* 16:9 */
 				padding-top: 25px;
 				height: 0;
-				max-width: 400px;
+				max-width: 20%;
 				margin: auto;
 			}
 			.responsiveIframe iframe {
@@ -22369,7 +22459,13 @@ Configuration:
 				left: 0;
 				width: 100%;
 				height: 100%;
-			}	
+			}
+			@media screen and (max-width: 1920px) {
+				.responsiveIframe {
+					max-width: 400px;
+					padding-bottom: 500px;
+				}
+			}
 			@media screen and (max-width: 840px) {	
 				h1{
 					width: 80%;
@@ -22388,19 +22484,19 @@ Configuration:
 				}
 			}
 		</style>
-		<h1>Register</h1>
-<!-- 		<iframe frameborder="0" width="400" height="500" src="https://peatix.com/event/161787/share/widget?a=1&t=1" id="peatixFrame"></iframe> -->
-		<div class="responsiveIframe">
-		    <iframe frameborder="0" src="https://peatix.com/event/161787/share/widget?a=1&amp;t=1" id="peatixFrame"></iframe>
-		</div>		
-		<footer-page></footer-page>
+		<div id="registerPage">
+			<h1>Register</h1>
+			<div class="responsiveIframe">
+			    <iframe frameborder="0" src="https://peatix.com/event/161787/share/widget?a=1&amp;t=1" id="peatixFrame"></iframe>
+			</div>		
+			<footer-page></footer-page>
+		</div>
 	</template>
 	<script>
 		Polymer({
 			is: 'register-page',
 
 			behaviors: [Polymer.NeonAnimatableBehavior],
-
 			properties: {
 				animationConfig: {
 					value: function() {
@@ -22409,19 +22505,47 @@ Configuration:
 								{
 									name: 'fade-in-animation',
 									node: this,
-									timing: {delay: 100}
-								}
+									timing: {
+										delay: 400,
+										duration: 500
+									}
+								},
+								{
+									name: 'transform-animation',
+									node: this.$.registerPage,
+									transformOrigin: '100%',
+									transformFrom: 'translateY(30%)',
+									transformTo: 'translateY(0%)',
+									timing: {
+										delay: 200,
+										duration: 800	
+									}       
+								}								
 							],
 							'exit': [
 								{
 									name: 'fade-out-animation',
 									node: this,
-									timing: {delay: 100}
-								}
-							]
+									timing: {
+										delay: 100,
+										duration: 500
+									}
+								},
+								{
+									name: 'transform-animation',
+									node: this.$.registerPage,
+									transformOrigin: '100%',
+									transformFrom: 'translateY(0%)',
+									transformTo: 'translateY(30%)',
+									timing: {
+										delay: 100,
+										duration: 800	
+									}       
+								}										
+							],
 						}
 					}
-				}
+				},
 			}
 		});
 	</script>
@@ -22451,6 +22575,7 @@ Configuration:
 				display: block;
 			}
 			paper-card{
+				max-width: 1600px;
 				width: 80%;
 				margin: 0 auto;
 				display: block;
@@ -22459,6 +22584,7 @@ Configuration:
 				};
 			}
 			#transport_title{
+				max-width: 1600px;
 				width: 80%;
 				display: block;
 				margin: 0 auto;
@@ -22516,6 +22642,7 @@ Configuration:
 				margin-bottom: 8px;
 			}
 			#venue_img{
+				max-width: 1600px;
 				margin: 0 auto;
 				width: 80%;
 				display: block;
@@ -22564,36 +22691,38 @@ Configuration:
 
 			}
 		</style>
-		<h1 id="transport_title">Getting There</h1>
-		<paper-card class="cyan">
-			<div class="card-content">
-				<div id="event-desc">
-					We are hosting Google I/O Extended 2016 MMU Cyberjaya at the <a href="https://goo.gl/maps/k5jXHuwPc5M2" target="_blank">Facaulty Of Computing &amp; Informatics, Multimedia University</a>, Cyberjaya Campus. Multimedia University located 20 minutes away from the city center of Kuala Lumpur.
+		<div id="transportPage">
+			<h1 id="transport_title">Getting There</h1>
+			<paper-card class="cyan">
+				<div class="card-content">
+					<div id="event-desc">
+						We are hosting Google I/O Extended 2016 MMU Cyberjaya at the <a href="https://goo.gl/maps/k5jXHuwPc5M2" target="_blank">Facaulty Of Computing &amp; Informatics, Multimedia University</a>, Cyberjaya Campus. Multimedia University located 20 minutes away from the city center of Kuala Lumpur.
+					</div>
 				</div>
-			</div>
-		</paper-card>
-		<a href="https://goo.gl/maps/fFFbbUqXpiP2" target="_blank">
-			<img src="images/fci.png" id="venue_img">
-		</a>
-		<paper-card class="bluegrey">
-			<div class="card-content">
-				<div id="transport-desc">
-					<h2>Getting to Multimedia University</h2>
-					<p>There are few ways to come to Multimedia University. Please take note this event ends at around 3:00AM, most of the public transportation are not operating at the hour.</p>
-					<h4>KLIA Transit</h4>
-					<p>If you are coming from outside Cyberjaya/Putrajaya, you need to take <a href="https://www.kliaekspres.com/">KLIA Transit</a> to Multimedia University. Fare starts from RM4.70 and up to RM25.00.</p>
-					<p>Please take note that KLIA Transit does not go directly to Multimedia Universty. You need to take Public Bus or Taxi from Putrajaya Sentral to Multimedia Unversity.</p>
-					<h4>Public Bus</h4>
-					<p><a href="http://www.papsb.com.my/" target="_blank">Nadi Putra</a> is the only public bus service operating in Cyberjaya/Putrajaya area. Take Nadi Putra T520 from Putrajaya Sentral and alight at Multimedia University. The fare from Putrajaya Sentral to Multimedia University is RM1. Please take not Nadi Putra does not accept Touch 'n Go.</p><p></p>
-					<h4>Taxi</h4>
-					<p>Taxi is available in Cyberjaya area. The fare from Putrajaya Sentral to Multimedia University is usually RM12.</p>
-					<h4>Driving</h4>
-					<p>Parking is available at Multimedia University. Use <a href="https://goo.gl/maps/A1UH6DLZmGM2" target="_blank">Google Maps</a> or <a href="https://waze.to/lr/hw2828vkdq" target="_blank">Wave</a> to navigate to Multimedia University.</p>
+			</paper-card>
+			<a href="https://goo.gl/maps/fFFbbUqXpiP2" target="_blank">
+				<img src="images/fci.png" id="venue_img">
+			</a>
+			<paper-card class="bluegrey">
+				<div class="card-content">
+					<div id="transport-desc">
+						<h2>Getting to Multimedia University</h2>
+						<p>There are few ways to come to Multimedia University. Please take note this event ends at around 3:00AM, most of the public transportation are not operating at the hour.</p>
+						<h4>KLIA Transit</h4>
+						<p>If you are coming from outside Cyberjaya/Putrajaya, you need to take <a href="https://www.kliaekspres.com/">KLIA Transit</a> to Multimedia University. Fare starts from RM4.70 and up to RM25.00.</p>
+						<p>Please take note that KLIA Transit does not go directly to Multimedia Universty. You need to take Public Bus or Taxi from Putrajaya Sentral to Multimedia Unversity.</p>
+						<h4>Public Bus</h4>
+						<p><a href="http://www.papsb.com.my/" target="_blank">Nadi Putra</a> is the only public bus service operating in Cyberjaya/Putrajaya area. Take Nadi Putra T520 from Putrajaya Sentral and alight at Multimedia University. The fare from Putrajaya Sentral to Multimedia University is RM1. Please take not Nadi Putra does not accept Touch 'n Go.</p><p></p>
+						<h4>Taxi</h4>
+						<p>Taxi is available in Cyberjaya area. The fare from Putrajaya Sentral to Multimedia University is usually RM12.</p>
+						<h4>Driving</h4>
+						<p>Parking is available at Multimedia University. Use <a href="https://goo.gl/maps/A1UH6DLZmGM2" target="_blank">Google Maps</a> or <a href="https://waze.to/lr/hw2828vkdq" target="_blank">Wave</a> to navigate to Multimedia University.</p>
+					</div>
 				</div>
-			</div>
-		</paper-card>
+			</paper-card>
 
-		<footer-page></footer-page>	
+			<footer-page></footer-page>	
+		</div>
 	</template>
 	<script>
 		Polymer({
@@ -22609,19 +22738,47 @@ Configuration:
 								{
 									name: 'fade-in-animation',
 									node: this,
-									timing: {delay: 100}
-								}
+									timing: {
+										delay: 400,
+										duration: 500
+									}
+								},
+								{
+									name: 'transform-animation',
+									node: this.$.transportPage,
+									transformOrigin: '100%',
+									transformFrom: 'translateY(30%)',
+									transformTo: 'translateY(0%)',
+									timing: {
+										delay: 200,
+										duration: 800	
+									}       
+								}								
 							],
 							'exit': [
 								{
 									name: 'fade-out-animation',
 									node: this,
-									timing: {delay: 100}
-								}
-							]
+									timing: {
+										delay: 100,
+										duration: 500
+									}
+								},
+								{
+									name: 'transform-animation',
+									node: this.$.transportPage,
+									transformOrigin: '100%',
+									transformFrom: 'translateY(0%)',
+									transformTo: 'translateY(30%)',
+									timing: {
+										delay: 100,
+										duration: 800	
+									}       
+								}										
+							],
 						}
 					}
-				}
+				},
 			}
 		});
 	</script>
@@ -22699,7 +22856,8 @@ Configuration:
 				padding: 36px 0;
 				margin: 0 auto;
 				margin-top: 56px;
-				width: 80%;				
+				width: 80%;		
+				max-width: 1400px;		
 			}
 			#footer-contain p{
 				color: rgba(0,0,0,0.7);
@@ -22715,6 +22873,7 @@ Configuration:
 				height: 96px;
 			}	
 			#hashtag{
+				max-width: 500px;
 				margin: 48px auto 24px auto;
 				width: 50%;
 				display: block;
@@ -22734,12 +22893,16 @@ Configuration:
 			@media screen and (max-width: 480px) {
 				#footer-gdg{
 					height: auto;
-					width: 90%;
+					width: 65%;
+					margin-left: 12px;
+					margin-bottom: -24px;
 				}					
 				#hashtag{
 					width: 100%;
+					margin: 24px auto;
 				}
 				#footer-contain{
+					padding: 12px 0;
 					margin-top: 24px;
 				}			
 			}

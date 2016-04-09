@@ -1,7 +1,4 @@
 <link rel="import" href="bower_components/polymer/polymer.html">
-<link rel="import" href="bower_components/neon-animation/neon-animatable-behavior.html">
-<link rel="import" href="bower_components/neon-animation/animations/fade-out-animation.html">
-<link rel="import" href="bower_components/neon-animation/animations/fade-in-animation.html">
 
 <dom-module id="transport-page">
 	<template>
@@ -29,6 +26,7 @@
 				display: block;
 			}
 			paper-card{
+				max-width: 1600px;
 				width: 80%;
 				margin: 0 auto;
 				display: block;
@@ -37,6 +35,7 @@
 				};
 			}
 			#transport_title{
+				max-width: 1600px;
 				width: 80%;
 				display: block;
 				margin: 0 auto;
@@ -94,6 +93,7 @@
 				margin-bottom: 8px;
 			}
 			#venue_img{
+				max-width: 1600px;
 				margin: 0 auto;
 				width: 80%;
 				display: block;
@@ -142,36 +142,38 @@
 
 			}
 		</style>
-		<h1 id="transport_title">Getting There</h1>
-		<paper-card class="cyan">
-			<div class="card-content">
-				<div id="event-desc">
-					We are hosting Google I/O Extended 2016 MMU Cyberjaya at the <a href="https://goo.gl/maps/k5jXHuwPc5M2" target="_blank">Facaulty Of Computing &amp; Informatics, Multimedia University</a>, Cyberjaya Campus. Multimedia University located 20 minutes away from the city center of Kuala Lumpur.
+		<div id="transportPage">
+			<h1 id="transport_title">Getting There</h1>
+			<paper-card class="cyan">
+				<div class="card-content">
+					<div id="event-desc">
+						We are hosting Google I/O Extended 2016 MMU Cyberjaya at the <a href="https://goo.gl/maps/k5jXHuwPc5M2" target="_blank">Facaulty Of Computing &amp; Informatics, Multimedia University</a>, Cyberjaya Campus. Multimedia University located 20 minutes away from the city center of Kuala Lumpur.
+					</div>
 				</div>
-			</div>
-		</paper-card>
-		<a href="https://goo.gl/maps/fFFbbUqXpiP2" target="_blank">
-			<img src="images/fci.png" id="venue_img">
-		</a>
-		<paper-card class="bluegrey">
-			<div class="card-content">
-				<div id="transport-desc">
-					<h2>Getting to Multimedia University</h2>
-					<p>There are few ways to come to Multimedia University. Please take note this event ends at around 3:00AM, most of the public transportation are not operating at the hour.</p>
-					<h4>KLIA Transit</h4>
-					<p>If you are coming from outside Cyberjaya/Putrajaya, you need to take <a href="https://www.kliaekspres.com/">KLIA Transit</a> to Multimedia University. Fare starts from RM4.70 and up to RM25.00.</p>
-					<p>Please take note that KLIA Transit does not go directly to Multimedia Universty. You need to take Public Bus or Taxi from Putrajaya Sentral to Multimedia Unversity.</p>
-					<h4>Public Bus</h4>
-					<p><a href="http://www.papsb.com.my/" target="_blank">Nadi Putra</a> is the only public bus service operating in Cyberjaya/Putrajaya area. Take Nadi Putra T520 from Putrajaya Sentral and alight at Multimedia University. The fare from Putrajaya Sentral to Multimedia University is RM1. Please take not Nadi Putra does not accept Touch 'n Go.</p></p>
-					<h4>Taxi</h4>
-					<p>Taxi is available in Cyberjaya area. The fare from Putrajaya Sentral to Multimedia University is usually RM12.</p>
-					<h4>Driving</h4>
-					<p>Parking is available at Multimedia University. Use <a href="https://goo.gl/maps/A1UH6DLZmGM2" target="_blank">Google Maps</a> or <a href="https://waze.to/lr/hw2828vkdq" target="_blank">Wave</a> to navigate to Multimedia University.</p>
+			</paper-card>
+			<a href="https://goo.gl/maps/fFFbbUqXpiP2" target="_blank">
+				<img src="images/fci.png" id="venue_img">
+			</a>
+			<paper-card class="bluegrey">
+				<div class="card-content">
+					<div id="transport-desc">
+						<h2>Getting to Multimedia University</h2>
+						<p>There are few ways to come to Multimedia University. Please take note this event ends at around 3:00AM, most of the public transportation are not operating at the hour.</p>
+						<h4>KLIA Transit</h4>
+						<p>If you are coming from outside Cyberjaya/Putrajaya, you need to take <a href="https://www.kliaekspres.com/">KLIA Transit</a> to Multimedia University. Fare starts from RM4.70 and up to RM25.00.</p>
+						<p>Please take note that KLIA Transit does not go directly to Multimedia Universty. You need to take Public Bus or Taxi from Putrajaya Sentral to Multimedia Unversity.</p>
+						<h4>Public Bus</h4>
+						<p><a href="http://www.papsb.com.my/" target="_blank">Nadi Putra</a> is the only public bus service operating in Cyberjaya/Putrajaya area. Take Nadi Putra T520 from Putrajaya Sentral and alight at Multimedia University. The fare from Putrajaya Sentral to Multimedia University is RM1. Please take not Nadi Putra does not accept Touch 'n Go.</p></p>
+						<h4>Taxi</h4>
+						<p>Taxi is available in Cyberjaya area. The fare from Putrajaya Sentral to Multimedia University is usually RM12.</p>
+						<h4>Driving</h4>
+						<p>Parking is available at Multimedia University. Use <a href="https://goo.gl/maps/A1UH6DLZmGM2" target="_blank">Google Maps</a> or <a href="https://waze.to/lr/hw2828vkdq" target="_blank">Wave</a> to navigate to Multimedia University.</p>
+					</div>
 				</div>
-			</div>
-		</paper-card>
+			</paper-card>
 
-		<footer-page></footer-page>	
+			<footer-page></footer-page>	
+		</div>
 	</template>
 	<script>
 		Polymer({
@@ -187,19 +189,47 @@
 								{
 									name: 'fade-in-animation',
 									node: this,
-									timing: {delay: 100}
-								}
+									timing: {
+										delay: 400,
+										duration: 500
+									}
+								},
+								{
+									name: 'transform-animation',
+									node: this.$.transportPage,
+									transformOrigin: '100%',
+									transformFrom: 'translateY(30%)',
+									transformTo: 'translateY(0%)',
+									timing: {
+										delay: 200,
+										duration: 800	
+									}       
+								}								
 							],
 							'exit': [
 								{
 									name: 'fade-out-animation',
 									node: this,
-									timing: {delay: 100}
-								}
-							]
+									timing: {
+										delay: 100,
+										duration: 500
+									}
+								},
+								{
+									name: 'transform-animation',
+									node: this.$.transportPage,
+									transformOrigin: '100%',
+									transformFrom: 'translateY(0%)',
+									transformTo: 'translateY(30%)',
+									timing: {
+										delay: 100,
+										duration: 800	
+									}       
+								}										
+							],
 						}
 					}
-				}
+				},
 			}
 		});
 	</script>

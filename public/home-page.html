@@ -1,7 +1,4 @@
 <link rel="import" href="bower_components/polymer/polymer.html">
-<link rel="import" href="bower_components/neon-animation/neon-animatable-behavior.html">
-<link rel="import" href="bower_components/neon-animation/animations/fade-out-animation.html">
-<link rel="import" href="bower_components/neon-animation/animations/fade-in-animation.html">
 
 <dom-module id="home-page">
 	<template>
@@ -29,6 +26,7 @@
 				display: block;
 			}
 			paper-card{
+				max-width: 1600px;
 				width: 80%;
 				margin: 0 auto;
 				display: block;
@@ -64,8 +62,9 @@
 				margin-bottom: 16px;
 			}
 			google-map {
+				max-width: 1600px;
 				height: 360px;
-				max-width: 80%;
+				width: 80%;
 				margin: 0 auto;
 			}
 			#venue_img{
@@ -108,49 +107,50 @@
 
 			}
 		</style>
-		<div id="cover"></div>
+		<div id="homePage">
+			<div id="cover"></div>
 
-		<iron-media-query query="(min-width: 840px)" query-matches="{{wide}}"></iron-media-query>
+			<iron-media-query query="(min-width: 840px)" query-matches="{{wide}}"></iron-media-query>
 
 
-		<paper-card animated-shadow="true" class="cyan">
-			<div class="card-content">
-				<div id="event-detail">
-					<p>11:00PM, 18 May - 3:00PM, 19 Maysssss</p>
-					<p>Multimedia University, Cyberjaya, Malaysia</p>
+			<paper-card animated-shadow="true" class="cyan">
+				<div class="card-content">
+					<div id="event-detail">
+						<p>11:00PM, 18 May - 3:00PM, 19 May</p>
+						<p>Multimedia University, Cyberjaya, Malaysia</p>
+					</div>
+					<div id="event-desc">
+						<p>Google I/O is for developers - the creative coders who are building what's next. Each year, we explore the latest in tech, mobile &amp; beyond.</p>		
+					</div>
 				</div>
-				<div id="event-desc">
-					<p>Google I/O is for developers - the creative coders who are building what's next. Each year, we explore the latest in tech, mobile &amp; beyond.</p>		
+			</paper-card>
+
+			<google-map
+				id="googleMap" 
+				latitude="2.927884" 
+				longitude="101.642177"
+				zoom="16"
+				disable-zoom
+				fitToMarkers
+				disable-Default-Ui
+				drag-Events="false">
+				<google-map-marker 
+					latitude="2.928684" 
+					longitude="101.641177"
+					title="Faculty of Computing and Informatics">
+				</google-map-marker>
+			</google-map>			
+
+			<paper-card class="bluegrey">
+				<div class="card-content">
+					<div id="get-ticket">
+						<p>Get your ticket now on Peatix.</p>
+						<a href="https://io16mmu.peatix.com" target="_blank"><paper-button raised>Book Now</paper-button></a>
+					</div>
 				</div>
-			</div>
-		</paper-card>
-
-		<google-map
-			id="googleMap" 
-			latitude="2.927884" 
-			longitude="101.642177"
-			zoom="16"
-			disable-zoom
-			fitToMarkers
-			disable-Default-Ui
-			drag-Events="false">
-			<google-map-marker 
-				latitude="2.928684" 
-				longitude="101.641177"
-				title="Faculty of Computing and Informatics">
-			</google-map-marker>
-		</google-map>			
-
-		<paper-card class="bluegrey">
-			<div class="card-content">
-				<div id="get-ticket">
-					<p>Get your ticket now on Peatix.</p>
-					<a href="https://io16mmu.peatix.com" target="_blank"><paper-button raised>Book Now</paper-button></a>
-				</div>
-			</div>
-		</paper-card>
-
-		<footer-page></footer-page>
+			</paper-card>
+			<footer-page></footer-page>
+		</div>
 	</template>
 	<script>
 		Polymer({
@@ -168,25 +168,48 @@
 								{
 									name: 'fade-in-animation',
 									node: this,
-									timing: {delay: 100}
-								}
+									timing: {
+										delay: 400,
+										duration: 500
+									}
+								},
+								{
+									name: 'transform-animation',
+									node: this.$.homePage,
+									transformOrigin: '100%',
+									transformFrom: 'translateY(30%)',
+									transformTo: 'translateY(0%)',
+									timing: {
+										delay: 200,
+										duration: 800	
+									}       
+								}								
 							],
 							'exit': [
 								{
 									name: 'fade-out-animation',
 									node: this,
-									timing: {delay: 100}
-								}
+									timing: {
+										delay: 100,
+										duration: 500
+									}
+								},
+								{
+									name: 'transform-animation',
+									node: this.$.homePage,
+									transformOrigin: '100%',
+									transformFrom: 'translateY(0%)',
+									transformTo: 'translateY(30%)',
+									timing: {
+										delay: 100,
+										duration: 800	
+									}       
+								}										
 							],
 						}
 					}
 				},
-			},
-
-			listeners: {
-				'neon-animation-start': '_onNeonAnimationFinish',
-				'neon-animation-finish': '_onNeonAnimationFinish'
-			},
+			}
 
 		});
 	</script>

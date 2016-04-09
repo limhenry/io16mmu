@@ -22,10 +22,10 @@
 			}
 			.responsiveIframe {
 				position: relative;
-				padding-bottom: 500px; /* 16:9 */
+				padding-bottom: 550px; /* 16:9 */
 				padding-top: 25px;
 				height: 0;
-				max-width: 400px;
+				max-width: 20%;
 				margin: auto;
 			}
 			.responsiveIframe iframe {
@@ -34,7 +34,13 @@
 				left: 0;
 				width: 100%;
 				height: 100%;
-			}	
+			}
+			@media screen and (max-width: 1920px) {
+				.responsiveIframe {
+					max-width: 400px;
+					padding-bottom: 500px;
+				}
+			}
 			@media screen and (max-width: 840px) {	
 				h1{
 					width: 80%;
@@ -53,19 +59,19 @@
 				}
 			}
 		</style>
-		<h1>Register</h1>
-<!-- 		<iframe frameborder="0" width="400" height="500" src="https://peatix.com/event/161787/share/widget?a=1&t=1" id="peatixFrame"></iframe> -->
-		<div class="responsiveIframe">
-		    <iframe frameborder="0" src="https://peatix.com/event/161787/share/widget?a=1&t=1" id="peatixFrame"></iframe>
-		</div>		
-		<footer-page></footer-page>
+		<div id="registerPage">
+			<h1>Register</h1>
+			<div class="responsiveIframe">
+			    <iframe frameborder="0" src="https://peatix.com/event/161787/share/widget?a=1&t=1" id="peatixFrame"></iframe>
+			</div>		
+			<footer-page></footer-page>
+		</div>
 	</template>
 	<script>
 		Polymer({
 			is: 'register-page',
 
 			behaviors: [Polymer.NeonAnimatableBehavior],
-
 			properties: {
 				animationConfig: {
 					value: function() {
@@ -74,19 +80,47 @@
 								{
 									name: 'fade-in-animation',
 									node: this,
-									timing: {delay: 100}
-								}
+									timing: {
+										delay: 400,
+										duration: 500
+									}
+								},
+								{
+									name: 'transform-animation',
+									node: this.$.registerPage,
+									transformOrigin: '100%',
+									transformFrom: 'translateY(30%)',
+									transformTo: 'translateY(0%)',
+									timing: {
+										delay: 200,
+										duration: 800	
+									}       
+								}								
 							],
 							'exit': [
 								{
 									name: 'fade-out-animation',
 									node: this,
-									timing: {delay: 100}
-								}
-							]
+									timing: {
+										delay: 100,
+										duration: 500
+									}
+								},
+								{
+									name: 'transform-animation',
+									node: this.$.registerPage,
+									transformOrigin: '100%',
+									transformFrom: 'translateY(0%)',
+									transformTo: 'translateY(30%)',
+									timing: {
+										delay: 100,
+										duration: 800	
+									}       
+								}										
+							],
 						}
 					}
-				}
+				},
 			}
 		});
 	</script>
