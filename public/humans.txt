@@ -1,0 +1,30 @@
+# The humans responsible & technology colophon - humanstxt.org
+
+# TEAM -----
+
+  Henry Lim - henrylim96 
+
+# TECHNOLOGY -----
+
+FRONTEND
+  - Polymer 1.0 (polymer-project.org)
+    + web components: html imports, <template>, custom elements, shadow dom
+    + iron elements, paper elements, google web components, neon elements
+  - Service Workers
+  - MOBILE
+    + add to homescreen
+    + app install banner
+    + <meta name="theme-color">
+  - Peatix
+
+APIS
+  - Google Analytics
+  - Google Maps API
+  - YouTube player
+
+BACKEND
+  - Python
+  - App Engine
+
+BUILD
+ - Vulcanize

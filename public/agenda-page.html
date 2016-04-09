@@ -1,7 +1,4 @@
 <link rel="import" href="bower_components/polymer/polymer.html">
-<link rel="import" href="bower_components/neon-animation/neon-animatable-behavior.html">
-<link rel="import" href="bower_components/neon-animation/animations/fade-out-animation.html">
-<link rel="import" href="bower_components/neon-animation/animations/fade-in-animation.html">
 
 <dom-module id="agenda-page">
 	<template>
@@ -10,6 +7,7 @@
 				display: block;
 			}
 			#agenda{
+				max-width: 1600px;
 				width: 80%;
 				display: block;
 				margin: 0 auto;
@@ -20,18 +18,85 @@
 				color: #78909c;
 				font-weight: 400;			
 			}
+			#container{
+				max-width: 1600px;
+				display: block;
+				margin: 0 auto;
+				width: 80%;
+			}
+			paper-card{
+				width: 100%;
+			}
+			#event_time{
+				background: #4DD0E1;
+				padding: 16px 32px;
+				font-size: 16px;
+				font-weight: 400;
+			}
+			#event_name{
+				background: #F7F9F9;
+				color: rgba(0,0,0,0.9);
+				padding: 36px 32px;
+				font-size: 20px;
+				font-weight: 400;
+			}
+			#toChange{
+				padding-top: 12px;
+				font-size: 14px;
+				font-weight: 400;
+				color: rgba(0,0,0,0.7);
+			}
 			@media screen and (max-width: 840px) {
+				#container{
+					width: 100%;
+				}
 				#agenda{
 					margin-top: 48px;
 					font-size: 36px;
 					padding-left: 10px;
 					font-size: 34px;
-				}					
+				}
+				#event_time{
+					padding: 14px 28px;
+					font-size: 14px;
+				}
+				#event_name{
+					padding: 20px 28px;
+					font-size: 20px;
+				}
+				#toChange{
+					padding-left: 20px;
+				}			
 			}	
 		</style>
-		<h1 id="agenda">Agenda</h1>
+		<div id="agendaCard">
+			<h1 id="agenda">Agenda</h1>
+			<div id="container">
+				<paper-card id="event_card">
+					<template 
+						is="dom-repeat" 
+						as="item"
+						items='[
+							{"time": "10:45PM (18 May)", "name": "Door Opens"}, 
+							{"time": "11:00PM", "name": "Registration &amp; Check In"}, 
+							{"time": "11:15PM", "name": "Pizza Party &amp; Network"},
+							{"time": "12:00AM (19 May) *", "name": "Keynote Live Stream"}, 
+							{"time": "3:00AM *", "name": "Closing and Depature"}
+						]'>
+							<div id="event_time">
+								[[item.time]]
+							</div>
+							<div id="event_name">
+								[[item.name]]
+							</div>					
+					</template>
+				</paper-card>
 
-		<footer-page></footer-page>
+				<p id="toChange">* Subject to change</p>
+			</div>
+
+			<footer-page></footer-page>
+		</div>
 	</template>
 	<script>
 		Polymer({
@@ -47,20 +112,48 @@
 								{
 									name: 'fade-in-animation',
 									node: this,
-									timing: {delay: 100}
-								}
+									timing: {
+										delay: 400,
+										duration: 500
+									}
+								},
+								{
+									name: 'transform-animation',
+									node: this.$.agendaCard,
+									transformOrigin: '100%',
+									transformFrom: 'translateY(30%)',
+									transformTo: 'translateY(0%)',
+									timing: {
+										delay: 200,
+										duration: 800	
+									}       
+								}								
 							],
 							'exit': [
 								{
 									name: 'fade-out-animation',
 									node: this,
-									timing: {delay: 100}
-								}
-							]
+									timing: {
+										delay: 100,
+										duration: 500
+									}
+								},
+								{
+									name: 'transform-animation',
+									node: this.$.agendaCard,
+									transformOrigin: '100%',
+									transformFrom: 'translateY(0%)',
+									transformTo: 'translateY(30%)',
+									timing: {
+										delay: 100,
+										duration: 800	
+									}       
+								}										
+							],
 						}
 					}
-				}
-			}
-		});
+				},
+		}
+	});
 	</script>
 </dom-module>

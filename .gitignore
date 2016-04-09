@@ -1,6 +1,7 @@
 node_modules
 bower_components
 public/bower_components
+public/images_raw
 [0-9.]*/components
 [0-9.]*/samples/components
 polymer-all

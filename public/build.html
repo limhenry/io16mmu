@@ -22008,6 +22008,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 				</paper-toolbar>
 				<iron-selector attr-for-selected="id" selected="{{data.page}}">
 					<paper-item id="" drawer-toggle="" on-tap="scrollTop">Home</paper-item>
+					<!-- <paper-item id="agenda" drawer-toggle on-tap="scrollTop">Agenda</paper-item> -->
 					<paper-item id="getting" drawer-toggle="" on-tap="scrollTop">Getting There</paper-item>
 					<paper-item id="register" drawer-toggle="" on-tap="scrollTop">Register</paper-item>
 				</iron-selector>
@@ -22033,6 +22034,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 						</div>
 						<div title=""></div>
 						<paper-tabs attr-for-selected="id" selected="{{data.page}}">
+							<!-- <paper-tab id="agenda" on-tap="scrollTop">AGENDA</paper-tab> -->
 							<paper-tab id="getting" on-tap="scrollTop">GETTING THERE</paper-tab>
 							<paper-tab id="register" on-tap="scrollTop">REGISTER</paper-tab>
 						</paper-tabs>    	    	
@@ -22173,6 +22175,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 					padding: 48px 60px;
 				};
 			}
+			.shadowElevation:hover{
+				@apply(--shadow-elevation-8dp);
+			}
 			#event-detail{
 				color: rgba(0,0,0,0.7);
 				font-size: 24px;
@@ -22217,7 +22222,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 					width: 100%;
 				}
 				google-map{
-
 					width: 100%;
 				}
 				#cover{
@@ -22252,8 +22256,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 			<iron-media-query query="(min-width: 840px)" query-matches="{{wide}}"></iron-media-query>
 
-
-			<paper-card animated-shadow="true" class="cyan">
+			<paper-card animated-shadow="" class="cyan shadowElevation">
 				<div class="card-content">
 					<div id="event-detail">
 						<p>11:00PM, 18 May - 3:00AM, 19 May</p>
@@ -22265,12 +22268,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 				</div>
 			</paper-card>
 
-			<google-map id="googleMap" latitude="2.927884" longitude="101.642177" zoom="16" disable-zoom="" fittomarkers="" disable-default-ui="" drag-events="false">
+			<google-map id="googleMap" latitude="2.927884" longitude="101.642177" zoom="16" disable-zoom="" fit-to-markers="" disable-default-ui="" drag-events="false">
 				<google-map-marker latitude="2.928684" longitude="101.641177" title="Faculty of Computing and Informatics">
 				</google-map-marker>
 			</google-map>			
 
-			<paper-card class="bluegrey">
+			<paper-card animated-shadow="" class="bluegrey shadowElevation">
 				<div class="card-content">
 					<div id="get-ticket">
 						<p>Get your ticket now on Peatix</p>
@@ -22560,6 +22563,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 			.bluegrey{
 				--paper-card-background-color: rgba(236,239,241,0.4);
 			}
+			.shadowElevation:hover{
+				@apply(--shadow-elevation-8dp);
+			}			
 			#cover{
 				background-image: url("images/cover_white.jpg");
 			    background-size: contain;
@@ -22689,15 +22695,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 		</style>
 		<div id="transportPage">
 			<h1 id="transport_title">Getting There</h1>
-			<paper-card class="cyan">
+			<paper-card class="cyan shadowElevation" animated-shadow="">
 				<div class="card-content">
 					<div id="event-desc">
-						We are hosting Google I/O Extended 2016 MMU Cyberjaya at the <a href="https://goo.gl/maps/k5jXHuwPc5M2" target="_blank">Facaulty Of Computing &amp; Informatics, Multimedia University</a>, Cyberjaya Campus. Multimedia University located 20 minutes away from the city center of Kuala Lumpur.
+						We are hosting Google I/O Extended 2016 MMU Cyberjaya at the <a href="https://goo.gl/maps/k5jXHuwPc5M2" target="_blank">Faculty Of Computing &amp; Informatics, Multimedia University</a>, Cyberjaya Campus. Multimedia University located 20 minutes away from the city center of Kuala Lumpur.
 					</div>
 				</div>
 			</paper-card>
 			<a href="https://goo.gl/maps/fFFbbUqXpiP2" target="_blank">
-				<img src="images/fci.png" id="venue_img">
+				<img src="images/fci.jpg" id="venue_img">
 			</a>
 			<paper-card class="bluegrey">
 				<div class="card-content">
@@ -22785,6 +22791,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 				display: block;
 			}
 			#agenda{
+				max-width: 1600px;
 				width: 80%;
 				display: block;
 				margin: 0 auto;
@@ -22795,18 +22802,82 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 				color: #78909c;
 				font-weight: 400;			
 			}
+			#container{
+				max-width: 1600px;
+				display: block;
+				margin: 0 auto;
+				width: 80%;
+			}
+			paper-card{
+				width: 100%;
+			}
+			#event_time{
+				background: #4DD0E1;
+				padding: 16px 32px;
+				font-size: 16px;
+				font-weight: 400;
+			}
+			#event_name{
+				background: #F7F9F9;
+				color: rgba(0,0,0,0.9);
+				padding: 36px 32px;
+				font-size: 20px;
+				font-weight: 400;
+			}
+			#toChange{
+				padding-top: 12px;
+				font-size: 14px;
+				font-weight: 400;
+				color: rgba(0,0,0,0.7);
+			}
 			@media screen and (max-width: 840px) {
+				#container{
+					width: 100%;
+				}
 				#agenda{
 					margin-top: 48px;
 					font-size: 36px;
 					padding-left: 10px;
 					font-size: 34px;
-				}					
+				}
+				#event_time{
+					padding: 14px 28px;
+					font-size: 14px;
+				}
+				#event_name{
+					padding: 20px 28px;
+					font-size: 20px;
+				}
+				#toChange{
+					padding-left: 20px;
+				}			
 			}	
 		</style>
-		<h1 id="agenda">Agenda</h1>
+		<div id="agendaCard">
+			<h1 id="agenda">Agenda</h1>
+			<div id="container">
+				<paper-card id="event_card">
+					<template is="dom-repeat" as="item" items="[
+							{&quot;time&quot;: &quot;10:45PM (18 May)&quot;, &quot;name&quot;: &quot;Door Opens&quot;}, 
+							{&quot;time&quot;: &quot;11:00PM&quot;, &quot;name&quot;: &quot;Registration &amp; Check In&quot;}, 
+							{&quot;time&quot;: &quot;11:15PM&quot;, &quot;name&quot;: &quot;Pizza Party &amp; Network&quot;},
+							{&quot;time&quot;: &quot;12:00AM (19 May) *&quot;, &quot;name&quot;: &quot;Keynote Live Stream&quot;}, 
+							{&quot;time&quot;: &quot;3:00AM *&quot;, &quot;name&quot;: &quot;Closing and Depature&quot;}
+						]">
+							<div id="event_time">
+								[[item.time]]
+							</div>
+							<div id="event_name">
+								[[item.name]]
+							</div>					
+					</template>
+				</paper-card>
 
-		<footer-page></footer-page>
+				<p id="toChange">* Subject to change</p>
+			</div>
+
+			<footer-page></footer-page>
+		</div>
 	</template>
 	<script>
 		Polymer({
@@ -22822,21 +22893,49 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 								{
 									name: 'fade-in-animation',
 									node: this,
-									timing: {delay: 100}
-								}
+									timing: {
+										delay: 400,
+										duration: 500
+									}
+								},
+								{
+									name: 'transform-animation',
+									node: this.$.agendaCard,
+									transformOrigin: '100%',
+									transformFrom: 'translateY(30%)',
+									transformTo: 'translateY(0%)',
+									timing: {
+										delay: 200,
+										duration: 800	
+									}       
+								}								
 							],
 							'exit': [
 								{
 									name: 'fade-out-animation',
 									node: this,
-									timing: {delay: 100}
-								}
-							]
+									timing: {
+										delay: 100,
+										duration: 500
+									}
+								},
+								{
+									name: 'transform-animation',
+									node: this.$.agendaCard,
+									transformOrigin: '100%',
+									transformFrom: 'translateY(0%)',
+									transformTo: 'translateY(30%)',
+									timing: {
+										delay: 100,
+										duration: 800	
+									}       
+								}										
+							],
 						}
 					}
-				}
-			}
-		});
+				},
+		}
+	});
 	</script>
 </dom-module><dom-module id="footer-page" assetpath="/">
 	<template>

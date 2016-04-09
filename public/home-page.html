@@ -34,6 +34,9 @@
 					padding: 48px 60px;
 				};
 			}
+			.shadowElevation:hover{
+				@apply(--shadow-elevation-8dp);
+			}
 			#event-detail{
 				color: rgba(0,0,0,0.7);
 				font-size: 24px;
@@ -78,7 +81,6 @@
 					width: 100%;
 				}
 				google-map{
-
 					width: 100%;
 				}
 				#cover{
@@ -113,8 +115,7 @@
 
 			<iron-media-query query="(min-width: 840px)" query-matches="{{wide}}"></iron-media-query>
 
-
-			<paper-card animated-shadow="true" class="cyan">
+			<paper-card animated-shadow class="cyan shadowElevation">
 				<div class="card-content">
 					<div id="event-detail">
 						<p>11:00PM, 18 May - 3:00AM, 19 May</p>
@@ -132,7 +133,7 @@
 				longitude="101.642177"
 				zoom="16"
 				disable-zoom
-				fitToMarkers
+				fit-To-Markers
 				disable-Default-Ui
 				drag-Events="false">
 				<google-map-marker 
@@ -142,7 +143,7 @@
 				</google-map-marker>
 			</google-map>			
 
-			<paper-card class="bluegrey">
+			<paper-card animated-shadow class="bluegrey shadowElevation">
 				<div class="card-content">
 					<div id="get-ticket">
 						<p>Get your ticket now on Peatix</p>

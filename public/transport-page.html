@@ -15,6 +15,9 @@
 			.bluegrey{
 				--paper-card-background-color: rgba(236,239,241,0.4);
 			}
+			.shadowElevation:hover{
+				@apply(--shadow-elevation-8dp);
+			}			
 			#cover{
 				background-image: url('images/cover_white.jpg');
 			    background-size: contain;
@@ -144,15 +147,15 @@
 		</style>
 		<div id="transportPage">
 			<h1 id="transport_title">Getting There</h1>
-			<paper-card class="cyan">
+			<paper-card class="cyan shadowElevation" animated-shadow>
 				<div class="card-content">
 					<div id="event-desc">
-						We are hosting Google I/O Extended 2016 MMU Cyberjaya at the <a href="https://goo.gl/maps/k5jXHuwPc5M2" target="_blank">Facaulty Of Computing &amp; Informatics, Multimedia University</a>, Cyberjaya Campus. Multimedia University located 20 minutes away from the city center of Kuala Lumpur.
+						We are hosting Google I/O Extended 2016 MMU Cyberjaya at the <a href="https://goo.gl/maps/k5jXHuwPc5M2" target="_blank">Faculty Of Computing &amp; Informatics, Multimedia University</a>, Cyberjaya Campus. Multimedia University located 20 minutes away from the city center of Kuala Lumpur.
 					</div>
 				</div>
 			</paper-card>
 			<a href="https://goo.gl/maps/fFFbbUqXpiP2" target="_blank">
-				<img src="images/fci.png" id="venue_img">
+				<img src="images/fci.jpg" id="venue_img">
 			</a>
 			<paper-card class="bluegrey">
 				<div class="card-content">
