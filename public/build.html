@@ -22046,13 +22046,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 				<carbon-location route="{{route}}" use-hash-as-path=""></carbon-location>
 				<carbon-route route="{{route}}" pattern="/:page" data="{{data}}"></carbon-route>
 
-				<neon-animated-pages class="flex" attr-for-selected="id" selected="{{data.page}}">
-					<home-page id=""></home-page>
-					<agenda-page id="agenda"></agenda-page>
-					<live-page id="live"></live-page>
-					<transport-page id="getting"></transport-page>
-					<register-page id="register"></register-page>
+				<neon-animated-pages id="neonAnimatedPages" class="flex" attr-for-selected="id" selected="{{data.page}}" animate-initial-selection="">
+						<home-page id=""></home-page>
+						<agenda-page id="agenda"></agenda-page>
+						<live-page id="live"></live-page>
+						<transport-page id="getting"></transport-page>
+						<register-page id="register"></register-page>
 				</neon-animated-pages>
+
 			</div>
 
 		</app-header-layout>
@@ -22079,7 +22080,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 				}
 			},
 			ready: function() {
-				
 				this.async(function() {
 					if (!this.route.path) {
 						this.set('route.path', '/');
@@ -22090,8 +22090,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 						window.location.hash = "/"
 					}
 				},1);
-				//console.log("                      \n                  `:                      \n                  ::                      \n                  ::                      \n:::::::::::       :.       .::::::        \n:::::::::::       :      :::::::::::      \n:::::::::::      ,:    `::::::::::::::    \n:::::::::::      ::   `::::::::::::::::   \n:::::::::::      :,   :::::::::::::::::.  \n:::::::::::      :`  :::::::::::::::::::  \n:::::::::::     `:  `:::::::::::::::::::: \n:::::::::::     ::  ::::::::::::::::::::: \n:::::::::::     ::  :::::::::::::::::::::`\n:::::::::::     :`  :::::::::::::::::::::,\n:::::::::::    `:   ::::::::::::::::::::::\n:::::::::::    ::   ::::::::::::::::::::::\n:::::::::::    ::   :::::::::::::::::::::,\n:::::::::::    :,   :::::::::::::::::::::`\n:::::::::::    :    ::::::::::::::::::::: \n:::::::::::   .:    `:::::::::::::::::::: \n:::::::::::   ::     :::::::::::::::::::  \n:::::::::::   ::      :::::::::::::::::.  \n:::::::::::   :`      `::::::::::::::::   \n:::::::::::  `:        `::::::::::::::    \n:::::::::::  ::          :::::::::::      \n:::::::::::  ::            .::::::        \n             :.                           \n             :                            \n            .:                            \n            ::                            \n");
-				//console.log('%cGoogle I/O Extended 2016\nMMU Cyberjaya', 'color: #5c6bc0; font-size: 3em; font-family: Roboto; font-weight: 800;-webkit-text-stroke: 2px black;');
+				console.log("                      \n                  `:                      \n                  ::                      \n                  ::                      \n:::::::::::       :.       .::::::        \n:::::::::::       :      :::::::::::      \n:::::::::::      ,:    `::::::::::::::    \n:::::::::::      ::   `::::::::::::::::   \n:::::::::::      :,   :::::::::::::::::.  \n:::::::::::      :`  :::::::::::::::::::  \n:::::::::::     `:  `:::::::::::::::::::: \n:::::::::::     ::  ::::::::::::::::::::: \n:::::::::::     ::  :::::::::::::::::::::`\n:::::::::::     :`  :::::::::::::::::::::,\n:::::::::::    `:   ::::::::::::::::::::::\n:::::::::::    ::   ::::::::::::::::::::::\n:::::::::::    ::   :::::::::::::::::::::,\n:::::::::::    :,   :::::::::::::::::::::`\n:::::::::::    :    ::::::::::::::::::::: \n:::::::::::   .:    `:::::::::::::::::::: \n:::::::::::   ::     :::::::::::::::::::  \n:::::::::::   ::      :::::::::::::::::.  \n:::::::::::   :`      `::::::::::::::::   \n:::::::::::  `:        `::::::::::::::    \n:::::::::::  ::          :::::::::::      \n:::::::::::  ::            .::::::        \n             :.                           \n             :                            \n            .:                            \n            ::                            \n");
+				console.log('%cGoogle I/O Extended 2016\nMMU Cyberjaya', 'color: #5c6bc0; font-size: 3em; font-family: Roboto; font-weight: 800;-webkit-text-stroke: 2px black;');
+
 			},
 			goHome: function(){
 				this.set('route.path', '/');
@@ -22118,7 +22119,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 				}				
 				else if (this.data.page == ""){
 					document.title="Google I/O Extended 2016 MMU Cyberjaya";
-					
 				}				
 				else{
 					this.set('route.path', '/');
@@ -22129,7 +22129,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 				this.async(function() {
 					document.querySelector('neon-animated-pages').addEventListener('neon-animation-finish', function() {
 						if(window.location.hash == "#/"){
-							console.log("map resize");
 							document.querySelector('app-page').querySelector('google-map').resize();
 						}
 					});
@@ -22218,7 +22217,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 					width: 100%;
 				}
 				google-map{
-					max-width: 100%;
+
+					width: 100%;
 				}
 				#cover{
 					height: 280px;
@@ -22256,7 +22256,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 			<paper-card animated-shadow="true" class="cyan">
 				<div class="card-content">
 					<div id="event-detail">
-						<p>11:00PM, 18 May - 3:00PM, 19 May</p>
+						<p>11:00PM, 18 May - 3:00AM, 19 May</p>
 						<p>Multimedia University, Cyberjaya, Malaysia</p>
 					</div>
 					<div id="event-desc">
@@ -22273,7 +22273,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 			<paper-card class="bluegrey">
 				<div class="card-content">
 					<div id="get-ticket">
-						<p>Get your ticket now on Peatix.</p>
+						<p>Get your ticket now on Peatix</p>
 						<a href="https://io16mmu.peatix.com" target="_blank"><paper-button raised="">Book Now</paper-button></a>
 					</div>
 				</div>
@@ -22338,7 +22338,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 						}
 					}
 				},
-			}
+			},
 
 		});
 	</script>
@@ -22434,10 +22434,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 			:host {
 				display: block;
 			}
-/*			#peatixFrame{
-				margin: 0 auto;
-				display: block;
-			}*/
 			h1{
 				text-align: center;
 				margin-bottom: 36px;
@@ -22447,7 +22443,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 			}
 			.responsiveIframe {
 				position: relative;
-				padding-bottom: 550px; /* 16:9 */
+				padding-bottom: 550px;
 				padding-top: 25px;
 				height: 0;
 				max-width: 20%;
