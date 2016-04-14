@@ -26,19 +26,35 @@
 			}
 			paper-card{
 				width: 100%;
+				background: #FAFAFA;
+				padding: 12px 28px;
+				margin-bottom: 32px;
+				border-top: 3px solid #5C6BC0;
+			}
+			paper-card:hover{
+				@apply(--shadow-elevation-4dp);
 			}
 			#event_time{
-				background: #4DD0E1;
-				padding: 16px 32px;
-				font-size: 16px;
+				color: rgba(0,0,0,0.5);
+				margin-bottom: 12px;
+				margin-left: 4px;
+				vertical-align: middle;
+			}
+			#event_title{
+				color: rgba(0,0,0,0.7);
+				font-size: 22px;
 				font-weight: 400;
 			}
-			#event_name{
-				background: #F7F9F9;
-				color: rgba(0,0,0,0.9);
-				padding: 36px 32px;
-				font-size: 20px;
-				font-weight: 400;
+			#event_desc_block iron-icon{
+				color: rgba(0,0,0,0.5);
+				margin-right: 2px;
+			}
+			#event_desc_block{
+				display: inline-block;
+				margin-right: 4px;
+				color: rgba(0,0,0,0.7);
+				font-size: 14px;
+				font-weight: 300;				
 			}
 			#toChange{
 				padding-top: 12px;
@@ -47,6 +63,12 @@
 				color: rgba(0,0,0,0.7);
 			}
 			@media screen and (max-width: 840px) {
+				paper-card{
+					border-top: 0 solid;
+				}
+				#event_time{
+					margin-left: 12px;
+				}
 				#container{
 					width: 100%;
 				}
@@ -56,41 +78,43 @@
 					padding-left: 10px;
 					font-size: 34px;
 				}
-				#event_time{
-					padding: 14px 28px;
-					font-size: 14px;
-				}
-				#event_name{
-					padding: 20px 28px;
-					font-size: 20px;
-				}
 				#toChange{
 					padding-left: 20px;
-				}			
+				}
+				#event_title{
+					margin: 0.5em 0;
+				}
 			}	
 		</style>
 		<div id="agendaCard">
 			<h1 id="agenda">Agenda</h1>
 			<div id="container">
-				<paper-card id="event_card">
-					<template 
-						is="dom-repeat" 
-						as="item"
-						items='[
-							{"time": "10:45PM (18 May)", "name": "Door Opens"}, 
-							{"time": "11:00PM", "name": "Registration &amp; Check In"}, 
-							{"time": "11:15PM", "name": "Pizza Party &amp; Network"},
-							{"time": "12:00AM (19 May) *", "name": "Keynote Live Stream"}, 
-							{"time": "3:00AM *", "name": "Closing and Depature"}
-						]'>
-							<div id="event_time">
-								[[item.time]]
+				<template 
+					is="dom-repeat" 
+					as="item"
+					items='[
+						{"start": "10:45PM, 18 May", "end": "11:00PM", "name": "Doors Open"}, 
+						{"start": "11:00PM", "end": "11:15PM", "name": "Registration &amp; Check In"}, 
+						{"start": "11:15PM", "end": "12:00AM", "name": "Pizza Party &amp; Network"},
+						{"start": "12:00AM, 19 May *", "end": "3:00AM", "name": "Keynote Live Stream"}, 
+						{"start": "3:00AM *", "end": "3:30AM" , "name": "Closing and Depature"}
+					]'>
+					<div id="event_time">
+						<iron-icon icon="device:access-time"></iron-icon>
+						[[item.start]]
+					</div>
+					<paper-card animated-shadow>
+						<p id="event_title">[[item.name]]</p>
+						<p id="event_desc">
+							<div id="event_desc_block">
+								<iron-icon icon="icons:history"></iron-icon>[[item.end]]
 							</div>
-							<div id="event_name">
-								[[item.name]]
-							</div>					
-					</template>
-				</paper-card>
+							<div id="event_desc_block">
+								<iron-icon icon="maps:place"></iron-icon>FCI Lecture Hall
+							</div>
+						</p>
+					</paper-card>
+				</template>
 
 				<p id="toChange">* Subject to change</p>
 			</div>
