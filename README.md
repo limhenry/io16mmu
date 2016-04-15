@@ -1,5 +1,4 @@
 # Google I/O Extended 2016 MMU Cyberjaya 
-![Imgur](http://i.imgur.com/sVamT59.png)
 [Live Demo](https://io16mmu.appspot.com/)
 
 ## This website is based on [Project Cerium](https://github.com/limhenry/cerium).

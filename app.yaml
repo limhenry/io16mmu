@@ -6,14 +6,62 @@
 
   handlers:
 
-  - url: /(.+)
-    static_files: public/\1
-    upload: public/(.*)
+  - url: /bower_components/(.+)
+    static_files: public/bower_components/\1
+    upload: public/bower_components/(.*)
+
+  - url: /elements/(.+)
+    static_files: public/elements/\1
+    upload: public/elements/(.*)    
+
+  - url: /images/(.+)
+    static_files: public/images/\1
+    upload: public/images/(.*)        
+    
+  - url: /sw-import.js
+    static_files: public/sw-import.js
+    upload: public/sw-import.js       
+
+  - url: /elements.html
+    static_files: public/elements.html
+    upload: public/elements.html
+
+  - url: /build.html
+    static_files: public/build.html
+    upload: public/build.html
+
+  - url: /manifest.json
+    static_files: public/manifest.json
+    upload: public/manifest.json  
+
+  - url: /humans.*
+    static_files: public/humans.txt
+    upload: public/humans.txt
+
+  - url: /LICENSE.*
+    static_files: public/LICENSE.txt
+    upload: public/LICENSE.txt  
 
   - url: /
     static_files: public/index.html
     upload: public/index.html
-    secure: always
+
+  - url: /speaker.*
+    static_files: public/index.html
+    upload: public/index.html
+
+  - url: /agenda.*
+    static_files: public/index.html
+    upload: public/index.html
+
+  - url: /getting.*
+    static_files: public/index.html
+    upload: public/index.html
+
+  - url: /register.*
+    static_files: public/index.html
+    upload: public/index.html         
+
 
   skip_files:
   - ^(.*/)?app\.yaml

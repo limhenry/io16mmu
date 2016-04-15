@@ -22,7 +22,7 @@
         }
         
         .io-logo {
-            background: url('images/io-white.png') no-repeat;
+            background: url('/images/io-white.png') no-repeat;
             display: inline-block;
             background-size: contain;
             height: 40px;
@@ -97,7 +97,7 @@
                         </template>
                         <template is="dom-if" if="{{wide}}">
                             <div on-tap="goHome">
-                                <img src="images/io.png" id="io-toolbar">
+                                <img src="/images/io.png" id="io-toolbar">
                             </div>
                             <div title></div>
                             <paper-tabs attr-for-selected="id" selected="{{data.page}}">
@@ -183,7 +183,6 @@
                 document.querySelector('neon-animated-pages').addEventListener('neon-animation-finish', function() {
                     app = document.querySelector('app-page');
                     if (app.data.page == "") {
-                        console.log("resize")
                         app.querySelector('google-map').resize();
                     }
                 });
