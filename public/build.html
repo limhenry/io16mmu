@@ -21708,7 +21708,236 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
   };
 </script>
-<script>
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+--><script>
+  (function() {
+    function interpolate(progress, points, fn, ctx) {
+      fn.apply(ctx, points.map(function(point) {
+        return point[0] + (point[1] - point[0]) * progress;
+      }));
+    }
+
+    /**
+     * Transform the font size of a designated title element between two values based on the scroll
+     * position.
+     */
+    Polymer.AppLayout.scrollEffects['resize-title'] = {
+      /** @this Polymer.AppLayout.ElementWithBackground */
+      setUp: function setUp() {
+        var title = Polymer.dom(this).querySelector('[title]');
+        var condensedTitle = Polymer.dom(this).querySelector('[condensed-title]');
+
+        if (!condensedTitle) {
+          this._warn(this._logf('effects[resize-title]', 'undefined `condensed-title`'));
+          return false;
+        }
+        if (!title) {
+          this._warn(this._logf('effects[resize-title]', 'undefined `title`'));
+          return false;
+        }
+
+        condensedTitle.style.willChange = 'opacity';
+        title.style.willChange = 'opacity';
+
+        condensedTitle.style.webkitTransform = 'translateZ(0)';
+        title.style.webkitTransform = 'translateZ(0)';
+
+        var titleClientRect = title.getBoundingClientRect();
+        var condensedTitleClientRect = condensedTitle.getBoundingClientRect();
+        var fx = {};
+
+        fx.scale = parseInt(window.getComputedStyle(condensedTitle)['font-size'], 10) /
+            parseInt(window.getComputedStyle(title)['font-size'], 10);
+        fx.titleDX = titleClientRect.left - condensedTitleClientRect.left;
+        fx.titleDY = titleClientRect.top - condensedTitleClientRect.top;
+        fx.condensedTitle = condensedTitle;
+        fx.title = title;
+
+        this._fxResizeTitle = fx;
+      },
+      /** @this Polymer.AppLayout.ElementWithBackground */
+      tearDown: function tearDown() {
+        delete this._fxResizeTitle;
+      },
+      /** @this PolymerElement */
+      run: function run(p, y) {
+        var fx = this._fxResizeTitle;
+        if (!this.condenses) {
+          y = 0;
+        }
+        if (p >= 1) {
+          fx.title.style.opacity = 0;
+          fx.condensedTitle.style.opacity = 1;
+        } else {
+          fx.title.style.opacity = 1;
+          fx.condensedTitle.style.opacity = 0;
+        }
+
+        interpolate(Math.min(1, p),
+          [
+            [1, fx.scale],
+            [0, -fx.titleDX],
+            [y, y-fx.titleDY]
+          ],
+          function(scale, translateX, translateY) {
+            this.transform('translate(' + translateX + 'px, ' + translateY + 'px) ' +
+                'scale3d(' + scale + ', ' + scale + ', 1)', fx.title);
+          }, this);
+      }
+    };
+  })();
+</script>
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+--><script>
+  /**
+   * While scrolling down, fade in the rear background layer and fade out the front background
+   * layer (opacity interpolated based on scroll position).
+   */
+  Polymer.AppLayout.scrollEffects['blend-background'] = {
+    /** @this Polymer.AppLayout.ElementWithBackground */
+    setUp: function setUp() {
+      this.$.backgroundFrontLayer.style.willChange = 'opacity';
+      this.$.backgroundFrontLayer.style.webkitTransform = 'translateZ(0)';
+      this.$.backgroundRearLayer.style.willChange = 'opacity';
+      this.$.backgroundRearLayer.style.webkitTransform = 'translateZ(0)';
+      this.$.backgroundRearLayer.style.opacity = 0;
+    },
+    /** @this Polymer.AppLayout.ElementWithBackground */
+    run: function run(p, y) {
+      this.$.backgroundFrontLayer.style.opacity = 1 - p;
+      this.$.backgroundRearLayer.style.opacity = p;
+    }
+  };
+</script>
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+--><script>
+  /**
+   * Vertically translate the background based on a factor of the scroll position.
+   */
+  Polymer.AppLayout.scrollEffects['parallax-background'] = {
+    /**
+     * @param {{scalar: string}} config
+     * @this Polymer.AppLayout.ElementWithBackground
+     */
+    setUp: function setUp(config) {
+      var scalar = parseFloat(config.scalar);
+
+      this._deltaBg = this.$.backgroundFrontLayer.offsetHeight - this.$.background.offsetHeight;
+      if (this._deltaBg === 0) {
+        if (isNaN(scalar)) {
+          scalar = 0.8;
+        }
+        this._deltaBg = this._dHeight * scalar;
+      } else {
+        if (isNaN(scalar)) {
+          scalar = 1;
+        }
+        this._deltaBg = this._deltaBg * scalar;
+      }
+    },
+    /** @this Polymer.AppLayout.ElementWithBackground */
+    tearDown: function tearDown() {
+      delete this._deltaBg;
+    },
+    /** @this Polymer.AppLayout.ElementWithBackground */
+    run: function run(p, y) {
+      this.transform('translate3d(0px, ' + (this._deltaBg * Math.min(1, p)) + 'px, 0px)', this.$.backgroundFrontLayer);
+      if (this.$.backgroundRearLayer) {
+        this.transform('translate3d(0px, ' + (this._deltaBg * Math.min(1, p)) + 'px, 0px)', this.$.backgroundRearLayer);
+      }
+    }
+  };
+</script>
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+--><script>
+  /**
+   * Upon scrolling past a threshold, fade in the rear background layer and fade out the front
+   * background layer (opacity CSS transitioned over time).
+   */
+  Polymer.AppLayout.scrollEffects['fade-background'] = {
+    /** @this Polymer.AppLayout.ElementWithBackground */
+    setUp: function setUp(config) {
+      var duration = config.duration || '0.5s';
+      this.$.backgroundFrontLayer.style.willChange = 'opacity';
+      this.$.backgroundFrontLayer.style.webkitTransform = 'translateZ(0)';
+      this.$.backgroundFrontLayer.style.transitionProperty = 'opacity';
+      this.$.backgroundFrontLayer.style.transitionDuration = duration;
+      this.$.backgroundRearLayer.style.willChange = 'opacity';
+      this.$.backgroundRearLayer.style.webkitTransform = 'translateZ(0)';
+      this.$.backgroundRearLayer.style.transitionProperty = 'opacity';
+      this.$.backgroundRearLayer.style.transitionDuration = duration;
+    },
+    /** @this Polymer.AppLayout.ElementWithBackground */
+    run: function run(p, y) {
+      if (p >= 1) {
+        this.$.backgroundFrontLayer.style.opacity = 0;
+        this.$.backgroundRearLayer.style.opacity = 1;
+      } else {
+        this.$.backgroundFrontLayer.style.opacity = 1;
+        this.$.backgroundRearLayer.style.opacity = 0;
+      }
+    }
+  };
+</script>
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+--><script>
+  /**
+   * Shorthand for the waterfall, resize-title, blend-background, and parallax-background effects.
+   */
+  Polymer.AppLayout.scrollEffects.material = {
+    /**
+     * @this Polymer.AppLayout.ElementWithBackground
+     */
+    setUp: function setUp() {
+      this.effects = 'waterfall resize-title blend-background parallax-background';
+      return false;
+    }
+  };
+</script>
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+--><script>
   /**
    * The `<platinum-sw-register>` element handles
    * [service worker](http://www.html5rocks.com/en/tutorials/service-worker/introduction/)
@@ -22081,215 +22310,201 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
   });
 </script>
-<dom-module id="app-page" assetpath="/">
-	<template>
-		<style>
-			:host {
-				display: block;
-				--paper-tab-ink: #546E7A;
-			}
-			paper-tabs{
-				margin-right: 24px;
-				--paper-tabs-selection-bar-color: #546E7A;
-				height: 64px;
-			}
-			paper-tab{
-				color: #546E7A;
-				font-weight: 500;
-			}
-			app-toolbar{
-				background: white;
-			}
-			.io-logo{
-				background: url("images/io-white.png") no-repeat;
-				display: inline-block;
-				background-size: contain;
-				height: 40px;
-				width: 60px;
-				transition: opacity 200ms ease-in-out;
-				will-change: opacity;				
-			}
-			.drawer-text{
-				font-size: 14px;
-				line-height: 20px;
-				color: #1E535A;
-				font-weight: 500;
-			}
-			paper-toolbar{
-				background: #4DD0E1;
-				margin-bottom: 8px;
-			}
-			paper-item{
-				font-size: 14px;
-				color: #546E7A;
-				font-weight: 500;
-				--paper-item-selected-weight: 500;
-				--paper-item-selected: {
-					background: #eceff1;
-				};
-			}
-			#io-toolbar{
-				cursor: pointer;
-				height: 40px;
-				margin-left: 20px;
-				vertical-align: middle;
-			}
-			@media screen and (max-width: 840px) {
-				paper-tabs{
-					margin-right: 0px;
-				}
-			}
-		</style>
+<dom-module id="app-page" assetpath="elements/">
+    <template>
+        <style>
+        :host {
+            display: block;
+            --paper-tab-ink: #546E7A;
+        }
+        
+        paper-tabs {
+            margin-right: 24px;
+            --paper-tabs-selection-bar-color: #546E7A;
+            height: 64px;
+        }
+        
+        paper-tab {
+            color: #546E7A;
+            font-weight: 500;
+        }
+        
+        app-toolbar {
+            background: white;
+        }
+        
+        .io-logo {
+            background: url("/images/io-white.png") no-repeat;
+            display: inline-block;
+            background-size: contain;
+            height: 40px;
+            width: 60px;
+            transition: opacity 200ms ease-in-out;
+            will-change: opacity;
+        }
+        
+        .drawer-text {
+            font-size: 14px;
+            line-height: 20px;
+            color: #1E535A;
+            font-weight: 500;
+        }
+        
+        paper-toolbar {
+            background: #4DD0E1;
+            margin-bottom: 8px;
+        }
+        
+        paper-item {
+            font-size: 14px;
+            color: #546E7A;
+            font-weight: 500;
+            --paper-item-selected-weight: 500;
+            --paper-item-selected: {
+                background: #eceff1;
+            }
+            ;
+        }
+        
+        #io-toolbar {
+            cursor: pointer;
+            height: 40px;
+            margin-left: 20px;
+            vertical-align: middle;
+        }
+        
+        @media screen and (max-width: 840px) {
+            paper-tabs {
+                margin-right: 0px;
+            }
+        }
+        </style>
+        <iron-media-query query="(min-width: 840px)" query-matches="{{wide}}"></iron-media-query>
+        <app-drawer-layout force-narrow="">
+            <template is="dom-if" if="{{!wide}}">
+                <app-drawer id="drawer" swipe-open="">
+                    <paper-toolbar class="tall">
+                        <div class="top io-logo" flex=""></div>
+                        <div class="bottom drawer-text">
+                            <div>11:00PM, 18 May</div>
+                            <div>Multimedia University, Cyberjaya</div>
+                        </div>
+                    </paper-toolbar>
+                    <iron-selector attr-for-selected="id" selected="{{data.page}}">
+                        <paper-item id="" drawer-toggle="" on-tap="scrollTop">Home</paper-item>
+                        <!-- <paper-item id="agenda" drawer-toggle on-tap="scrollTop">Agenda</paper-item> -->
+                        <paper-item id="getting" drawer-toggle="" on-tap="scrollTop">Getting There</paper-item>
+                        <paper-item id="register" drawer-toggle="" on-tap="scrollTop">Register</paper-item>
+                    </iron-selector>
+                </app-drawer>
+            </template>
+            <template is="dom-if" if="{{wide}}">
+                <app-drawer id="drawer"></app-drawer>
+            </template>
+            <app-header-layout>
+                <app-header reveals="" effects="waterfall">
+                    <app-toolbar wide-layout$="{{wide}}">
+                        <template is="dom-if" if="{{!wide}}">
+                            <paper-icon-button icon="menu" drawer-toggle=""></paper-icon-button>
+                        </template>
+                        <template is="dom-if" if="{{wide}}">
+                            <div on-tap="goHome">
+                                <img src="/images/io.png" id="io-toolbar">
+                            </div>
+                            <div title=""></div>
+                            <paper-tabs attr-for-selected="id" selected="{{data.page}}">
+                                <!-- <paper-tab id="agenda" on-tap="scrollTop">AGENDA</paper-tab> -->
+                                <paper-tab id="getting" on-tap="scrollTop">GETTING THERE</paper-tab>
+                                <paper-tab id="register" on-tap="scrollTop">REGISTER</paper-tab>
+                            </paper-tabs>
+                        </template>
+                    </app-toolbar>
+                </app-header>
+                <div>
+                    <carbon-location route="{{route}}"></carbon-location>
+                    <carbon-route route="{{route}}" pattern="/:page" data="{{data}}"></carbon-route>
+                    <neon-animated-pages id="neonAnimatedPages" class="flex" attr-for-selected="id" selected="{{data.page}}" animate-initial-selection="">
+                        <home-page id=""></home-page>
+                        <agenda-page id="agenda"></agenda-page>
+                        <live-page id="live"></live-page>
+                        <transport-page id="getting"></transport-page>
+                        <register-page id="register"></register-page>
+                    </neon-animated-pages>
+                </div>
+            </app-header-layout>
+        </app-drawer-layout>
+        <platinum-sw-register auto-register=""></platinum-sw-register>
+    </template>
+    <script>
+    Polymer({
+        is: 'app-page',
+        properties: {
+            route: {
+                type: Object,
+                observer: "changeTitle",
+                notify: true
+            },
+            data: {
+                type: Object,
+                value: {
+                    page: '/home/'
+                },
+            }
+        },
+        ready: function() {
+            this.async(function() {
+                if (!this.route.path) {
+                    this.set('route.path', '/');
+                }
+                if (this.route.path == "/") {
+                    this.set('route.path', '/');
+                }
+            }, 1);
+            console.log("                      \n                  `:                      \n                  ::                      \n                  ::                      \n:::::::::::       :.       .::::::        \n:::::::::::       :      :::::::::::      \n:::::::::::      ,:    `::::::::::::::    \n:::::::::::      ::   `::::::::::::::::   \n:::::::::::      :,   :::::::::::::::::.  \n:::::::::::      :`  :::::::::::::::::::  \n:::::::::::     `:  `:::::::::::::::::::: \n:::::::::::     ::  ::::::::::::::::::::: \n:::::::::::     ::  :::::::::::::::::::::`\n:::::::::::     :`  :::::::::::::::::::::,\n:::::::::::    `:   ::::::::::::::::::::::\n:::::::::::    ::   ::::::::::::::::::::::\n:::::::::::    ::   :::::::::::::::::::::,\n:::::::::::    :,   :::::::::::::::::::::`\n:::::::::::    :    ::::::::::::::::::::: \n:::::::::::   .:    `:::::::::::::::::::: \n:::::::::::   ::     :::::::::::::::::::  \n:::::::::::   ::      :::::::::::::::::.  \n:::::::::::   :`      `::::::::::::::::   \n:::::::::::  `:        `::::::::::::::    \n:::::::::::  ::          :::::::::::      \n:::::::::::  ::            .::::::        \n             :.                           \n             :                            \n            .:                            \n            ::                            \n");
+            console.log('%cGoogle I/O Extended 2016\nMMU Cyberjaya', 'color: #5c6bc0; font-size: 3em; font-family: Roboto; font-weight: 800;-webkit-text-stroke: 2px black;');
 
-	<iron-media-query query="(min-width: 840px)" query-matches="{{wide}}"></iron-media-query>
+        },
+        goHome: function() {
+            this.set('route.path', '/');
+            document.body.scrollTop = 0
+        },
+        toggleDrawer: function() {
+            this.$.drawer.toggle();
+        },
+        scrollTop: function() {
+            document.body.scrollTop = 0
+        },
+        changeTitle: function() {
+            if (this.data.page == "getting") {
+                document.title = "Getting There"
+            } else if (this.data.page == "register") {
+                document.title = "Register"
+            } else if (this.data.page == "agenda") {
+                document.title = "Agenda"
+            } else if (this.data.page == "live") {
+                document.title = "Live Stream"
+            } else if (this.data.page == "") {
+                document.title = "Google I/O Extended 2016 MMU Cyberjaya";
+            } else {
+                this.set('route.path', '/');
+            }
+        },
 
-	<app-drawer-layout force-narrow="">
+        attached: function() {
+            this.async(function() {
+                document.querySelector('neon-animated-pages').addEventListener('neon-animation-finish', function() {
+                    app = document.querySelector('app-page');
+                    if (app.data.page == "") {
+                        app.querySelector('google-map').resize();
+                    }
+                });
+            });
+        },
 
-		<template is="dom-if" if="{{!wide}}">
-			<app-drawer id="drawer" swipe-open="">
-				<paper-toolbar class="tall">
-					<div class="top io-logo" flex=""></div>
-					<div class="bottom drawer-text">
-						<div>11:00PM, 18 May</div>
-						<div>Multimedia University, Cyberjaya</div>
-					</div>
-				</paper-toolbar>
-				<iron-selector attr-for-selected="id" selected="{{data.page}}">
-					<paper-item id="" drawer-toggle="" on-tap="scrollTop">Home</paper-item>
-					<!-- <paper-item id="agenda" drawer-toggle on-tap="scrollTop">Agenda</paper-item> -->
-					<paper-item id="getting" drawer-toggle="" on-tap="scrollTop">Getting There</paper-item>
-					<paper-item id="register" drawer-toggle="" on-tap="scrollTop">Register</paper-item>
-				</iron-selector>
-			</app-drawer>
-		</template>
-		<template is="dom-if" if="{{wide}}">
-			<app-drawer id="drawer"></app-drawer>
-		</template>		
-
-		<app-header-layout>
-
-			<app-header reveals="" effects="waterfall">
-
-				<app-toolbar wide-layout$="{{wide}}">
-
-					<template is="dom-if" if="{{!wide}}">
-						<paper-icon-button icon="menu" drawer-toggle=""></paper-icon-button>	
-					</template>
-
-					<template is="dom-if" if="{{wide}}">
-						<div on-tap="goHome">
-							<img src="images/io.png" id="io-toolbar">
-						</div>
-						<div title=""></div>
-						<paper-tabs attr-for-selected="id" selected="{{data.page}}">
-							<!-- <paper-tab id="agenda" on-tap="scrollTop">AGENDA</paper-tab> -->
-							<paper-tab id="getting" on-tap="scrollTop">GETTING THERE</paper-tab>
-							<paper-tab id="register" on-tap="scrollTop">REGISTER</paper-tab>
-						</paper-tabs>    	    	
-					</template>
-
-				</app-toolbar>
-
-			</app-header>
-
-			<div>
-				<carbon-location route="{{route}}" use-hash-as-path=""></carbon-location>
-				<carbon-route route="{{route}}" pattern="/:page" data="{{data}}"></carbon-route>
-
-				<neon-animated-pages id="neonAnimatedPages" class="flex" attr-for-selected="id" selected="{{data.page}}" animate-initial-selection="">
-						<home-page id=""></home-page>
-						<agenda-page id="agenda"></agenda-page>
-						<live-page id="live"></live-page>
-						<transport-page id="getting"></transport-page>
-						<register-page id="register"></register-page>
-				</neon-animated-pages>
-
-			</div>
-
-		</app-header-layout>
-
-	</app-drawer-layout>
-
-	<platinum-sw-register auto-register=""></platinum-sw-register>
-
-	</template>
-	<script>
-		Polymer({
-			is: 'app-page',
-			properties: {
-				route: {
-					type: Object,
-					observer: "changeTitle",
-					notify: true					
-				},
-				data: {
-					type: Object,
-					value: {
-						page: '/home/'
-					},
-				}
-			},
-			ready: function() {
-				this.async(function() {
-					if (!this.route.path) {
-						this.set('route.path', '/');
-						window.location.hash = "/"
-					}
-					if (this.route.path == "/"){
-						this.set('route.path', '/');
-						window.location.hash = "/"
-					}
-				},1);
-				console.log("                      \n                  `:                      \n                  ::                      \n                  ::                      \n:::::::::::       :.       .::::::        \n:::::::::::       :      :::::::::::      \n:::::::::::      ,:    `::::::::::::::    \n:::::::::::      ::   `::::::::::::::::   \n:::::::::::      :,   :::::::::::::::::.  \n:::::::::::      :`  :::::::::::::::::::  \n:::::::::::     `:  `:::::::::::::::::::: \n:::::::::::     ::  ::::::::::::::::::::: \n:::::::::::     ::  :::::::::::::::::::::`\n:::::::::::     :`  :::::::::::::::::::::,\n:::::::::::    `:   ::::::::::::::::::::::\n:::::::::::    ::   ::::::::::::::::::::::\n:::::::::::    ::   :::::::::::::::::::::,\n:::::::::::    :,   :::::::::::::::::::::`\n:::::::::::    :    ::::::::::::::::::::: \n:::::::::::   .:    `:::::::::::::::::::: \n:::::::::::   ::     :::::::::::::::::::  \n:::::::::::   ::      :::::::::::::::::.  \n:::::::::::   :`      `::::::::::::::::   \n:::::::::::  `:        `::::::::::::::    \n:::::::::::  ::          :::::::::::      \n:::::::::::  ::            .::::::        \n             :.                           \n             :                            \n            .:                            \n            ::                            \n");
-				console.log('%cGoogle I/O Extended 2016\nMMU Cyberjaya', 'color: #5c6bc0; font-size: 3em; font-family: Roboto; font-weight: 800;-webkit-text-stroke: 2px black;');
-
-			},
-			goHome: function(){
-				this.set('route.path', '/');
-				document.body.scrollTop = 0
-			},
-			toggleDrawer: function(){
-				this.$.drawer.toggle();
-			},
-			scrollTop: function(){
-				document.body.scrollTop = 0
-			},
-			changeTitle: function(){
-				if (this.data.page == "getting"){
-					document.title="Getting There"
-				}
-				else if (this.data.page == "register"){
-					document.title="Register"
-				}
-				else if (this.data.page == "agenda"){
-					document.title="Agenda"
-				}				
-				else if (this.data.page == "live"){
-					document.title="Live Stream"
-				}				
-				else if (this.data.page == ""){
-					document.title="Google I/O Extended 2016 MMU Cyberjaya";
-				}				
-				else{
-					this.set('route.path', '/');
-				}
-			},
-			
-			attached: function() {
-				this.async(function() {
-					document.querySelector('neon-animated-pages').addEventListener('neon-animation-finish', function() {
-						if(window.location.hash == "#/"){
-							document.querySelector('app-page').querySelector('google-map').resize();
-						}
-					});
-				});
-			},				
-
-		});
-	</script>
-
+    });
+    </script>
 </dom-module>
-<dom-module id="home-page" assetpath="/">
+<dom-module id="home-page" assetpath="elements/">
 	<template>
 		<style>
 			:host {
@@ -22305,7 +22520,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 				--paper-card-background-color: rgba(236,239,241,0.4);
 			}
 			#cover{
-				background-image: url("images/cover_white.png");
+				background-image: url("/images/cover_white.png");
 			    background-size: contain;
 			    background-repeat: no-repeat;
 			    background-position: center; 
@@ -22394,7 +22609,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 				}
 				#cover{
 					margin-top: 0;
-					background-image: url("images/cover_white_vertical.png");
+					background-image: url("/images/cover_white_vertical.png");
 				}		
 
 			}
@@ -22493,7 +22708,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 		});
 	</script>
-</dom-module><dom-module id="live-page" assetpath="/">
+</dom-module><dom-module id="live-page" assetpath="elements/">
 	<template>
 		<style>
 			:host {
@@ -22579,7 +22794,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 			}
 		});
 	</script>
-</dom-module><dom-module id="register-page" assetpath="/">
+</dom-module><dom-module id="register-page" assetpath="elements/">
 	<template>
 		<style>
 			:host {
@@ -22696,7 +22911,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 			}
 		});
 	</script>
-</dom-module><dom-module id="transport-page" assetpath="/">
+</dom-module><dom-module id="transport-page" assetpath="elements/">
 	<template>
 		<style>
 			:host {
@@ -22715,7 +22930,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 				@apply(--shadow-elevation-8dp);
 			}			
 			#cover{
-				background-image: url("images/cover_white.jpg");
+				background-image: url("/images/cover_white.jpg");
 			    background-size: contain;
 			    background-repeat: no-repeat;
 			    background-position: center; 
@@ -22836,7 +23051,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 				}
 				#cover{
 					margin-top: 12px;
-					background-image: url("images/cover_white_vertical.jpg");
+					background-image: url("/images/cover_white_vertical.jpg");
 				}
 
 			}
@@ -22851,7 +23066,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 				</div>
 			</paper-card>
 			<a href="https://goo.gl/maps/fFFbbUqXpiP2" target="_blank">
-				<img src="images/fci.jpg" id="venue_img">
+				<img src="/images/fci.jpg" id="venue_img">
 			</a>
 			<paper-card class="bluegrey">
 				<div class="card-content">
@@ -22932,7 +23147,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 			}
 		});
 	</script>
-</dom-module><dom-module id="agenda-page" assetpath="/">
+</dom-module><dom-module id="agenda-page" assetpath="elements/">
 	<template>
 		<style>
 			:host {
@@ -23109,7 +23324,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 		}
 	});
 	</script>
-</dom-module><dom-module id="footer-page" assetpath="/">
+</dom-module><dom-module id="footer-page" assetpath="elements/">
 	<template>
 		<style>
 			:host {
@@ -23176,12 +23391,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 			
 		</style>
 		<a href="https://twitter.com/hashtag/io16extended" target="_blank">
-			<img src="images/hashtag.png" id="hashtag">
+			<img src="/images/hashtag.png" id="hashtag">
 		</a>
 		<footer>
 			<div id="footer-contain">
-				<a href="https://www.facebook.com/GDGKualaLumpur/" target="_blank"><img src="images/gdgkl.png" id="footer-gdg"></a>
-				<p>Created and Designed by <a href="https://limhenry.xyz" target="_blank">Henry Lim</a></p>
+				<a href="https://www.facebook.com/GDGKualaLumpur/" target="_blank"><img src="/images/gdgkl.png" id="footer-gdg"></a>
+				<p>© 2016 Based on <a href="https://github.com/limhenry/cerium" target="_blank">Project Cerium</a> by <a href="https://limhenry.xyz" target="_blank">Henry Lim</a>.</p>
+                <p>Designed and created by <a href="https://limhenry.xyz" target="_blank">Henry Lim</a> <b>·</b> GDG Kuala Lumpur</p>
 			</div>
 		</footer>
 	</template>
